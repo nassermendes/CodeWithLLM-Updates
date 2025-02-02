@@ -1,1 +1,5 @@
-"# CodeWithLLM-Updates" 
+# CodeWithLLM-Updates
+
+https://t.me/llms4coding
+
+Корисні поради, приклади, інструкції та інші матеріали на тему LLM, які допоможуть вам у програмуванні.
