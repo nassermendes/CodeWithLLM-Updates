@@ -1,5 +1,7 @@
 **CodeWithLLM-Updates**
 
+See English below
+
 ## Як краще створювати код за допомогою LLM
 
 Інформація присвячена використанню великих мовних моделей (LLM) для програмування! Тут ви знайдете корисні поради, приклади, інструкції та інші матеріали, які допоможуть вам у створенні коду з допомогою штучного інтелекту.
@@ -8,6 +10,8 @@
 
 
 ### Що ви знайдете тут
+
+Є слайди моїх лекцій за 2023-24 роки.
 
 #### Корисні поради
 
@@ -83,7 +87,7 @@ Welcome to the repo dedicated to using large language models (LLM) for programmi
 * Recommendations for videos that will help you better understand the capabilities and limitations of LLM technologies
 * How to use videos for learning and improving your skills
 
-### Who This Channel is For
+### Who This Repo is For
 
 * Programmers: Learn how to use LLM to accelerate development, find bugs, and generate code
 * Startups: Find tools that will help your team be more productive
