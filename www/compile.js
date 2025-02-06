@@ -200,6 +200,26 @@ function savePostsToJson(posts, language) {
   return posts.slice(0, 30);
 }
 
+function copyImages(sourcePath, targetPath) {
+  if (!fs.existsSync(sourcePath)) return;
+  
+  const files = fs.readdirSync(sourcePath);
+  files.forEach(file => {
+    const curPath = path.join(sourcePath, file);
+    const stat = fs.statSync(curPath);
+    
+    if (stat.isDirectory()) {
+      copyImages(curPath, targetPath);
+    } else {
+      const ext = path.extname(file).toLowerCase();
+      if (ALLOWED_EXTENSIONS.images.includes(ext)) {
+        const targetFile = path.join(targetPath, file);
+        fs.copyFileSync(curPath, targetFile);
+      }
+    }
+  });
+}
+
 async function compile() {
   const publicDir = path.join(__dirname, 'public');
   
@@ -211,6 +231,20 @@ async function compile() {
     
     // Очищаем содержимое папки public
     await removeDirectoryContentsWithRetry(publicDir);
+
+    // Создаем папку для изображений
+    const imgDir = path.join(publicDir, 'img');
+    if (!fs.existsSync(imgDir)) {
+      fs.mkdirSync(imgDir);
+    }
+
+    // Копируем изображения из всех языковых директорий
+    for (const lang of Object.values(posts_source)) {
+      lang.forEach(({path: yearDir}) => {
+        const yearPath = path.join('..', yearDir);
+        copyImages(yearPath, imgDir);
+      });
+    }
 
     const engPosts = processLanguagePosts(posts_source.eng);
     const ukrPosts = processLanguagePosts(posts_source.ukr);

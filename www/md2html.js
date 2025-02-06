@@ -1,27 +1,38 @@
 const marked = require('marked');
+marked.use({ breaks: true, gfm: true }); // Поддержка переносов строк
 
-const youtubeExtension = {
+marked.use({
   renderer: {
-    image(href) {
-      const url = href.href || href;
-      if (typeof url !== 'string' || !url.includes('youtube.com')) return false;
+    image(href, title, text) {
+      const url = (href?.href || href)?.trim() || '';
       
-      const videoId = url.match(/\/(vi?|embed)\/([^\/]+)/i)?.[2] || 
-                     url.match(/(?:v=|\/v\/|^\/|embed\/)([^&\?\/]+)/i)?.[1];
-      return videoId ? `
-        <div class="youtube-wrapper">
-          <iframe 
-            width="100%" 
-            height="400" 
-            src="https://www.youtube-nocookie.com/embed/${videoId}" 
-            frameborder="0" 
-            allowfullscreen>
-          </iframe>
-        </div>
-      ` : false;
+      // Обработка YouTube
+      if (url.includes('youtube.com')) {
+        const videoId = url.match(/\/(vi?|embed)\/([^\/]+)/i)?.[2] || 
+                       url.match(/(?:v=|\/v\/|^\/|embed\/)([^&\?\/]+)/i)?.[1];
+        if (videoId) {
+          return `
+            <div class="youtube-wrapper">
+              <iframe 
+                width="100%" 
+                height="400" 
+                src="https://www.youtube-nocookie.com/embed/${videoId}" 
+                frameborder="0" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          `;
+        }
+      }
+      
+      // Обработка остальных изображений
+      const isExternal = /^(https?:|\.\.?\/|\/)/.test(url);
+      if (!isExternal) {
+        return `<img src="/img/${url}"${text ? ` alt="${text}"` : ''}${title ? ` title="${title}"` : ''} />`;
+      }
     }
   }
-};
+});
 
 
 /**
@@ -30,13 +41,8 @@ const youtubeExtension = {
  * @returns {string} - результат в виде HTML
  */
 function markdownToHtml(markdown) {
-  // Удаляем HTML-комментарии
-  markdown = markdown.replace(/<!--[\s\S]*?-->/g, '');
   
-  marked.use(youtubeExtension);
-  marked.use({ breaks: true, gfm: true }); // Поддержка переносов строк
-  
-  return marked.parse(markdown);
+  return marked.parse(markdown.replace(/<!--[\s\S]*?-->/g, ''));
 }
 
 module.exports = markdownToHtml;
