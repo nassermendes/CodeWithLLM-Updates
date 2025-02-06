@@ -5,5 +5,8 @@
     "build": "node compile.js"
   },
   "author": "Dan Voronov",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^15.0.6"
+  }
 }
