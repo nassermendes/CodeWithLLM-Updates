@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -544,6 +571,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -612,6 +640,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,24 +722,29 @@
     </div>
   
       
-        <div class="post" data-title="2024-12-29 23:37" data-date="2024-12-29T23:37:02">
-          <p><img src="/img/2024-12-29-23-37-02.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-29 23:37" data-date="2024-12-29T23:37:02">
+            <p><img src="/img/2024-12-29-23-37-02.jpg" /></p>
 <p>China is China</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-29 23:24" data-date="2024-12-29T23:24:53">
-          <p><strong>Roo-Cline</strong>  - a fork of Cline (prev. Claude Dev)<br><a href="https://github.com/RooVetGit/Roo-Cline">github</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-29 23:24" data-date="2024-12-29T23:24:53">
+            <p><strong>Roo-Cline</strong>  - a fork of Cline (prev. Claude Dev)<br><a href="https://github.com/RooVetGit/Roo-Cline">github</a> </p>
 <p>Added experimental features:</p>
 <p>Dragging images into chats<br>Sound effects for feedback<br>Quick copying of requests from history<br>Includes the current time in the system request<br>Uses a file system watcher for more reliable monitoring of file system changes<br>Automatic MCP approval for each tool<br>Enabling/disabling MCP servers<br>Configurable delay after automatic recording to allow diagnostics to identify potential problems<br>and others</p>
 <p>Works alongside the original Cline</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-29 13:51" data-date="2024-12-29T13:51:23">
-          <p><img src="/img/2024-12-29-13-51-23.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-29 13:51" data-date="2024-12-29T13:51:23">
+            <p><img src="/img/2024-12-29-13-51-23.jpg" /></p>
 <p><a href="https://www.reddit.com/r/ChatGPTCoding/comments/1gwnpqs/comment/lyaln1x/">reddit</a> </p>
 <p>None of them (AI assistants) are perfect... they all have some drawbacks.</p>
 <p>For me <a href="https://codeium.com/windsurf">Windsurf</a>  is the best and most reliable for editing <strong>multiple</strong>  files, no doubt. It just seems to understand the context better. But it needs some refinement and some features.</p>
@@ -718,11 +753,13 @@
 <p><a href="https://github.com/cline/cline">Cline</a>  is free (there is an option) and works quite well.</p>
 <p><a href="Continue.dev">Continue.dev</a>  is free and great for autocomplete through the free codestral FIM API.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-29 01:28" data-date="2024-12-29T01:28:19">
-          <p><a href="https://www.youtube.com/watch?v=GAe1IQtHqVU">Video</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-29 01:28" data-date="2024-12-29T01:28:19">
+            <p><a href="https://www.youtube.com/watch?v=GAe1IQtHqVU">Video</a> </p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -738,11 +775,13 @@
 <p>Composer in Cursor is a tool that allows AI to create entire applications according to instructions. It significantly speeds up development, automating the creation of files, code, commands in the terminal. This can be especially useful if you want to quickly create a prototype or avoid routine work.</p>
 <p>This cannot be used with your API key, you need to pay for Cursor Pro. <em>Some Cursor features (like Tab Completion, Apply from Chat, and Composer) require specialized models and won’t work with custom API keys</em></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-26 13:28" data-date="2024-12-26T13:28:58">
-          <p><strong>LLM from Google</strong>  can finally do something</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-26 13:28" data-date="2024-12-26T13:28:58">
+            <p><strong>LLM from Google</strong>  can finally do something</p>
 <p>Now Gemini 2.0 Flash <strong>as an experiment</strong>  is free to use through Google AI Studio and API. It has a large context window - 2 million tokens (this is for input). 😲</p>
 <p><em>Models from Google can be connected via API in Cursor settings (tab &quot;Models&quot;), but auto-patching from chat disappears and requires the Pro version, in my opinion, this is stinginess.</em> </p>
 <p>And <a href="https://www.youtube.com/watch?v=0l4hoQlyslw">in this video</a> </p>
@@ -764,46 +803,56 @@
 </ul>
 <p>On the Aider leaderboard, it is of course behind the top models, but you have to pay for them, and this is a Flash series model, i.e., simplified.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-25 13:48" data-date="2024-12-25T13:48:13">
-          <p><img src="/img/2024-12-25-13-48-13.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-25 13:48" data-date="2024-12-25T13:48:13">
+            <p><img src="/img/2024-12-25-13-48-13.jpg" /></p>
 <p>Cursor cheats</p>
 <p><strong>@ Symbols:</strong> </p>
 <p>File reference: <code>@filename</code>  - allows you to refer to a specific file.<br>Function reference: <code>@functionName</code>  - refers to a function in the code.<br>Variable reference: <code>@variableName</code>  - refers to a variable.</p>
 <p>Codebase search: <code>@codebase</code>  query - searches the codebase.<br>Web search: <code>@web</code>  query - performs a web search.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-25 00:40" data-date="2024-12-25T00:40:41">
-          <p><img src="/img/2024-12-25-00-40-41.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-25 00:40" data-date="2024-12-25T00:40:41">
+            <p><img src="/img/2024-12-25-00-40-41.jpg" /></p>
 <p>An interesting opinion <a href="https://news.ycombinator.com/item?id=42492753">here in the comment</a>:</p>
 <p><em>With the development of artificial intelligence in programming, the price of (simple) software is heading to zero! Sometimes, it is much faster to &quot;code&quot; the function or utility you need yourself than to look for something ready-made.</em> </p>
 <p>Previously, developing even a small program required significant effort and time. Now, with the help of AI-based tools, the process of creating your own software is becoming fast and simple.</p>
 <p>That is, until everything becomes AI and software disappears, there will be something transitional, and that is when those who know how will make their own programs, rather than use others&#39;.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-19 00:13" data-date="2024-12-19T00:13:56">
-          <p><img src="/img/2024-12-19-00-13-56.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-19 00:13" data-date="2024-12-19T00:13:56">
+            <p><img src="/img/2024-12-19-00-13-56.jpg" /></p>
 <p>Github sent me an email saying that Copilot has a free usage with the following limitations:</p>
 <p>2k code completions, 50 chat messages / month</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-18 23:21" data-date="2024-12-18T23:21:50">
-          <p>Chatbot Arena added WebDev Arena: <a href="https://web.lmarena.ai/">web.lmarena.ai</a>  - AI battle of two models to find what generates the best UI</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-18 23:21" data-date="2024-12-18T23:21:50">
+            <p>Chatbot Arena added WebDev Arena: <a href="https://web.lmarena.ai/">web.lmarena.ai</a>  - AI battle of two models to find what generates the best UI</p>
 <p>Models: Claude 3.5 Sonnet (20241022), Gemini-Exp-1206, GPT-4o-2024-11-20, Gemini-2.0-Flash-Exp, Qwen2.5-Coder-32B-Instruct and Gemini-1.5-Pro-002.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-17 23:31" data-date="2024-12-17T23:31:52">
-          <p>Examples of where and how to set project context for AI</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-17 23:31" data-date="2024-12-17T23:31:52">
+            <p>Examples of where and how to set project context for AI</p>
 <ul>
 <li>VSC Copilot</li>
 <li>Cursor .cursorrules</li>
@@ -824,11 +873,13 @@
           </p>
 <p>The author of the video would like it to work like memGPT, that is, chats themselves understand what needs to be added there</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-17 00:12" data-date="2024-12-17T00:12:03">
-          <p><img src="/img/2024-12-17-00-12-03.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-17 00:12" data-date="2024-12-17T00:12:03">
+            <p><img src="/img/2024-12-17-00-12-03.jpg" /></p>
 <p><strong>Windsurf</strong> <a href="https://codeium.com/windsurf">https://codeium.com/windsurf</a> </p>
 <p>as a competitor to Cursor (at launch, it can also take settings from it). At the base, it&#39;s all the same VSC, so the interface does not need to be studied much.</p>
 <p>You need a codeium account, this is a minus. There are three models - for money GPT 4o and Claude 3.5 Sonnet, free Cascade Base (this is like Llama 3 70B). I&#39;m looking for what will work on my API keys, and there is no such option here, unfortunately.</p>
@@ -847,11 +898,13 @@
           </p>
 <p> draws an analogy with a 2015 car - &quot;Tartan Prancer&quot; (Honda from Albania) to illustrate that Windsurf creates the impression of a great tool, but in reality, it is unfinished. He compares it to colleagues at work who constantly redo everything. AI here constantly rewrites the code of many files, which makes you have to check everything constantly, and this is like starting from scratch.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-13 17:14" data-date="2024-12-13T17:14:39">
-          <p><a href="https://www.youtube.com/watch?v=GhIm-Dk1pzk">https://www.youtube.com/watch?v=GhIm-Dk1pzk</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-13 17:14" data-date="2024-12-13T17:14:39">
+            <p><a href="https://www.youtube.com/watch?v=GhIm-Dk1pzk">https://www.youtube.com/watch?v=GhIm-Dk1pzk</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -865,19 +918,23 @@
           </p>
 <p><strong>Devin</strong>  is publicly available to everyone.<br>500$ / month.<br>Only through Slack.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-13 02:11" data-date="2024-12-13T02:11:48">
-          <p>In the Gemini 2.0 Flash update, there are Jules and Colab Data Science Agent.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-13 02:11" data-date="2024-12-13T02:11:48">
+            <p>In the Gemini 2.0 Flash update, there are Jules and Colab Data Science Agent.</p>
 <p><a href="https://developers.googleblog.com/en/the-next-chapter-of-the-gemini-era-for-developers/">url</a><strong>Jules</strong>  is an experimental AI-based agent that can perform code development tasks, including bug fixes, writing new features, and creating pull requests.<br>[not yet available]</p>
 <p><strong>Colab Data Science Agent</strong>  is an assistant for data analysis. This tool is designed to automate data work. It helps to quickly get insights by creating working Colab notebooks based on requests.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-11 18:56" data-date="2024-12-11T18:56:12">
-          <p>&quot;12 days&quot; of OpenAI — day 4</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-11 18:56" data-date="2024-12-11T18:56:12">
+            <p>&quot;12 days&quot; of OpenAI — day 4</p>
 <p>Canvas in ChatGPT is now for everyone and has learned to execute Python code</p>
 <p><a href="https://www.youtube.com/watch?v=qZ0ImE41pVs">https://www.youtube.com/watch?v=qZ0ImE41pVs</a></p>
 <p>
@@ -893,18 +950,23 @@
           </p>
 <p>Competitor function Anthropic’s Claude <strong>Artifacts</strong>  has long been able to even output React components, but lately, they have big problems with the load and they are disabling many things for free users</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-07 13:29" data-date="2024-12-07T13:29:06">
-          <p><img src="/img/2024-12-07-13-29-06.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-07 13:29" data-date="2024-12-07T13:29:06">
+            <p><img src="/img/2024-12-07-13-29-06.jpg" /></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-12-06 18:57" data-date="2024-12-06T18:57:01">
-          <p><img src="/img/2024-12-06-18-57-01.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-12-06 18:57" data-date="2024-12-06T18:57:01">
+            <p><img src="/img/2024-12-06-18-57-01.jpg" /></p>
 
+          </div>
         </div>
       
       

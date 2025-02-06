@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -544,6 +571,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -612,6 +640,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,27 +722,32 @@
     </div>
   
       
-        <div class="post" data-title="2024-10-30 21:53" data-date="2024-10-30T21:53:42">
-          <p>GitHub Copilot now provides model selection - developers can use models from Anthropic, Google, and OpenAI.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-30 21:53" data-date="2024-10-30T21:53:42">
+            <p>GitHub Copilot now provides model selection - developers can use models from Anthropic, Google, and OpenAI.</p>
 <p>Introduced GitHub Spark - a tool for creating applications in natural language.</p>
 <p>A number of improvements have been implemented in GitHub Copilot, Copilot Workspace, GitHub Models, and Copilot Autofix to create an even more integrated AI-driven environment for developers.</p>
 <p><em>According to GitHub Octoverse 2024, the number of developers in the world has grown dramatically, with Python overtaking JavaScript as the most popular language on GitHub, partly due to the growth of activity in the field of generative AI.</em> <a href="https://github.com/newsroom/press-releases/github-universe-2024">https://github.com/newsroom/press-releases/github-universe-2024</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-23 12:34" data-date="2024-10-23T12:34:31">
-          <p><strong>Copilot Arena</strong> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-23 12:34" data-date="2024-10-23T12:34:31">
+            <p><strong>Copilot Arena</strong> </p>
 <p>Copilot Arena is a free-to-use project for comparing artificial intelligence assistants (models) for code generation.</p>
 <p>Provides you for evaluation <em>paired</em>  autocompletions from different language models, including GPT-4o, Codestral, Llama-3.1, and others.</p>
 <p>The goal is to evaluate which ones provide the best assistance to the programmer.</p>
 <p><a href="https://github.com/lmarena/copilot-arena">github</a> <a href="https://marketplace.visualstudio.com/items?itemName=copilot-arena.copilot-arena">vsc</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-23 02:47" data-date="2024-10-23T02:47:47">
-          <p>🤖 Anthropic introduced new versions of the Claude 3.5 Sonnet and Claude 3.5 Haiku models, which significantly improved their performance.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-23 02:47" data-date="2024-10-23T02:47:47">
+            <p>🤖 Anthropic introduced new versions of the Claude 3.5 Sonnet and Claude 3.5 Haiku models, which significantly improved their performance.</p>
 <p>🖥 The biggest novelty is &quot;using the computer / Agentic Computer Use&quot; (beta) - the ability of Claude models to directly interact with the computer, open applications, perform tasks and <strong>create code</strong>.</p>
 <p>💻 Demonstrations show that models can find information, fill out forms, fix errors and even create websites <strong>on their own</strong>.</p>
 <p><a href="https://www.youtube.com/watch?v=xwf4LKrCy9w">https://www.youtube.com/watch?v=xwf4LKrCy9w</a></p>
@@ -728,47 +763,58 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-05 13:05" data-date="2024-10-05T13:05:09">
-          <p>We have a new interesting stage in the development of coding assistants. If earlier we started with tools like phind and other plugins integrated into Visual Studio Code (VSC) as a chat, now users have at least four main options:</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-05 13:05" data-date="2024-10-05T13:05:09">
+            <p>We have a new interesting stage in the development of coding assistants. If earlier we started with tools like phind and other plugins integrated into Visual Studio Code (VSC) as a chat, now users have at least four main options:</p>
 <p>(1) from the category of such plugins, the first and main one is <strong>GitHub Copilot</strong>, which is a completely closed product of Microsoft + OpenaAI, very closely integrated with VSC. Everything has already been decided and configured for you</p>
 <p>(2) At the same time, little by little <strong>Cursor</strong>  gained popularity, which is now a stable and high-quality product. Although it initially supported the use of API keys and custom queries to interact with models, it has now shifted more to &quot;you pay, we configure&quot;</p>
 <p>(3) The next option is Canvas or Artifact, which are already built into the <strong>chats on the website</strong>, allowing you to interactively work with code and get hints in real time in the browser itself. For simple projects. There are similar online ides</p>
 <p>(4) And finally, &quot;copies&quot; of Cursor are starting to come out, for example <strong>PearAI</strong>, focused on a more transparent approach to interacting with models - through API keys and locally of our choice. These are no longer just VSC plugins. <em>Now I&#39;m testing this program and it has enough bugs so far</em><br>So the field of AI coding continues to evolve, and users can choose among different products, depending on their needs and preferences.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-05 12:38" data-date="2024-10-05T12:38:44">
-          <p><img src="/img/2024-10-05-12-38-44.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-05 12:38" data-date="2024-10-05T12:38:44">
+            <p><img src="/img/2024-10-05-12-38-44.jpg" /></p>
 <p>Review code in ChatGPT Canvas</p>
 <p>The main thing they did was finally respond to Claude artifacts (I used them quite often for code and did not want to return to the ChatGPT chat) - but here it only works in paid plans, and there in all.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-04 23:46" data-date="2024-10-04T23:46:44">
-          <p><a href="https://openai.com/index/introducing-canvas/">https://openai.com/index/introducing-canvas/</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-04 23:46" data-date="2024-10-04T23:46:44">
+            <p><a href="https://openai.com/index/introducing-canvas/">https://openai.com/index/introducing-canvas/</a> </p>
 <p>OpenAI announced a new ChatGPT feature for editing text or <strong>code</strong>  — Canvas. It allows you to move the chat to a separate panel and have an &quot;editor window&quot;.</p>
 <p>For text, it&#39;s cool that it allows you to make edits from AI on the side, like comments in Word. For code, there is a similar &quot;Review code&quot; button. In general, the functionality for code (so far?) is very basic and, unfortunately, does not have the ability to run, as it is in Claude Artifacts. But for simple projects, it&#39;s better than it was.</p>
 <p>There is an interesting button for translating code into other programming languages, but the question remains who needs it (maybe if JS to TS). The add comments and logging buttons do not do this selectively, but almost on every line of code - this is bad.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-02 23:43" data-date="2024-10-02T23:43:10">
-          <p>📎 <a href="2024-10-02-23-43-10.mp3">AIs talks about PearAI.mp3</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-02 23:43" data-date="2024-10-02T23:43:10">
+            <p>📎 <a href="2024-10-02-23-43-10.mp3">AIs talks about PearAI.mp3</a></p>
 <p>Generated in notebooklm</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-10-02 19:27" data-date="2024-10-02T19:27:27">
-          <p><a href="https://trypear.ai/">https://trypear.ai/</a><strong>PearAI</strong>  called themselves open source Cursor - they forked VSCode (editor) and <a href="https://github.com/continuedev/continue">Continue</a>  (AI programming assistant) - this caused a small quarrel with Continue over ownership and license type, which added PR to them (<a href="https://techcrunch.com/2024/09/30/y-combinator-is-being-criticized-after-it-backed-an-ai-startup-that-admits-it-basically-cloned-another-ai-startup/">TechCrunch</a> )</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-10-02 19:27" data-date="2024-10-02T19:27:27">
+            <p><a href="https://trypear.ai/">https://trypear.ai/</a><strong>PearAI</strong>  called themselves open source Cursor - they forked VSCode (editor) and <a href="https://github.com/continuedev/continue">Continue</a>  (AI programming assistant) - this caused a small quarrel with Continue over ownership and license type, which added PR to them (<a href="https://techcrunch.com/2024/09/30/y-combinator-is-being-criticized-after-it-backed-an-ai-startup-that-admits-it-basically-cloned-another-ai-startup/">TechCrunch</a> )</p>
 <p>PS there was already an open source clone of Cursor <a href="https://voideditor.com/">https://voideditor.com/</a></p>
 
+          </div>
         </div>
       
       

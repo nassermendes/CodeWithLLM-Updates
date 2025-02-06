@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -544,6 +571,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -612,6 +640,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,22 +722,27 @@
     </div>
   
       
-        <div class="post" data-title="2024-07-21 13:37" data-date="2024-07-21T13:37:32">
-          <p><img src="/img/2024-07-21-13-37-32.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-21 13:37" data-date="2024-07-21T13:37:32">
+            <p><img src="/img/2024-07-21-13-37-32.jpg" /></p>
 <p>Cursor added 4o-mini — a new fast model from OpenAI</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-07-20 02:01" data-date="2024-07-20T02:01:57">
-          <p>codestral-mamba-latest on 7B from Mistral - <a href="https://mistral.ai/news/codestral-mamba/">news</a><br>context window 256k tokens</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-20 02:01" data-date="2024-07-20T02:01:57">
+            <p>codestral-mamba-latest on 7B from Mistral - <a href="https://mistral.ai/news/codestral-mamba/">news</a><br>context window 256k tokens</p>
 <p>A model for programming has been released, not Transformer, but Mamba architecture</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-07-16 16:09" data-date="2024-07-16T16:09:27">
-          <p><strong>Artifacts</strong>  — in the video, a leak of details about the new Claude feature: not code written by programmers, but an effectively formulated query to the LLM.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-16 16:09" data-date="2024-07-16T16:09:27">
+            <p><strong>Artifacts</strong>  — in the video, a leak of details about the new Claude feature: not code written by programmers, but an effectively formulated query to the LLM.</p>
 <p>The new feature, according to the leak, demonstrates how well-structured queries can effectively manage large amounts of information, creating meaningful content that users can easily adapt and reuse. This opens up new perspectives for software development, where the key role is played by the ability to correctly query the LLM at the beginning, and not just program.</p>
 <p><a href="https://youtu.be/EoswGAcD5YY">https://youtu.be/EoswGAcD5YY</a></p>
 <p>
@@ -722,17 +757,21 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-07-15 00:14" data-date="2024-07-15T00:14:41">
-          <p>Artifacts can now also be published online</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-15 00:14" data-date="2024-07-15T00:14:41">
+            <p>Artifacts can now also be published online</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-07-15 00:08" data-date="2024-07-15T00:08:04">
-          <p>It seems to have appeared in Poe under the name Preview</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-15 00:08" data-date="2024-07-15T00:08:04">
+            <p>It seems to have appeared in Poe under the name Preview</p>
 <p><a href="https://youtu.be/tnbXJE8s3Dk?si=tXxH96QPfPMphHjj">https://youtu.be/tnbXJE8s3Dk?si=tXxH96QPfPMphHjj</a></p>
 <p>
             <div class="youtube-wrapper">
@@ -746,11 +785,13 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-07-08 23:03" data-date="2024-07-08T23:03:45">
-          <p><strong>Claude Artifacts in the</strong>  web interface</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-07-08 23:03" data-date="2024-07-08T23:03:45">
+            <p><strong>Claude Artifacts in the</strong>  web interface</p>
 <p><a href="https://www.youtube.com/watch?v=8xvsBOzLGGA">https://www.youtube.com/watch?v=8xvsBOzLGGA</a></p>
 <p>
             <div class="youtube-wrapper">
@@ -766,6 +807,7 @@
 <p>🎮 The video is about a new feature in Claude 3.5 Chat that allows you to create video games. It tells how to use this feature to develop games.</p>
 <p>🔍 The author of the video gives an overview of the main features of Claude 3.5 and emphasizes that he recently realized the importance of another significant feature that can be activated in the settings</p>
 
+          </div>
         </div>
       
       

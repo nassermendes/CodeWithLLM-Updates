@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -550,6 +577,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -618,6 +646,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -690,8 +720,9 @@
     </div>
   
       
-        <div class="post" data-title="2025-02-06 12:05" data-date="2025-02-06T12:05:00">
-          <p>сайт <a href="https://cursor.directory/">https://cursor.directory/</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-02-06 12:05" data-date="2025-02-06T12:05:00">
+            <p>сайт <a href="https://cursor.directory/">https://cursor.directory/</a></p>
 <p>це <strong>каталог шаблонів</strong>  <code>.cursorrules</code> для <a href="https://www.cursor.com/">Cursor AI</a> та інш ai-ide</p>
 <p>за різними темами (шаблонів поки що небагато)</p>
 <p>У розділі <em>Learn</em> (<a href="https://cursor.directory/learn">https://cursor.directory/learn</a>) зібрані відеоуроки з різних тем від початкового ознайомлення з Cursor AI до більш просунутих технік розробки як то Composer та Rules, інтеграції з іншими платформами та сервісами.</p>
@@ -701,21 +732,25 @@
 <li><a href="https://cursorlist.com/">https://cursorlist.com/</a></li>
 </ul>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-02-04 18:26" data-date="2025-02-04T18:26:00">
-          <p>На <a href="https://aider.chat/docs/leaderboards/">Aider LLM Leaderboards</a> вже кілька днів перше місце займає не одна модель, а зв’язка DeepSeek R1 + claude-3-5-sonnet-20241022.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-02-04 18:26" data-date="2025-02-04T18:26:00">
+            <p>На <a href="https://aider.chat/docs/leaderboards/">Aider LLM Leaderboards</a> вже кілька днів перше місце займає не одна модель, а зв’язка DeepSeek R1 + claude-3-5-sonnet-20241022.</p>
 <p>Напевно, саме цим керувалися люди, які створили проект </p>
 <p><strong>DeepClaude</strong> 0.1.0<br><a href="https://deepclaude.com/">https://deepclaude.com/</a></p>
 <p>Наразі це дуже мінімалістична BYOK (Bring Your Own Keys) open-source система (<a href="https://github.com/getAsterisk/deepclaude">https://github.com/getAsterisk/deepclaude</a>) на Rust, створена <em>An Asterisk</em> як side project — потрібно платити двом провайдерам і ввести їхні API-ключі. Хм, чому не зробити через <a href="https://openrouter.ai/">https://openrouter.ai/</a> — можливо хтось допише.</p>
 <p>Можна використовувати на їхньому сайті або розгортати локально.  <em>Це не IDE та не плагін, це просто чат з двома моделями.</em></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-02-02 18:46" data-date="2025-02-02T18:46:19">
-          <p><a href="https://www.youtube.com/watch?v=gYLNxUxVomY">https://www.youtube.com/watch?v=gYLNxUxVomY</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-02-02 18:46" data-date="2025-02-02T18:46:19">
+            <p><a href="https://www.youtube.com/watch?v=gYLNxUxVomY">https://www.youtube.com/watch?v=gYLNxUxVomY</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -748,26 +783,31 @@
 <p>згадує <a href="https://repoprompt.com/">https://repoprompt.com/</a> </p>
 <p> #cursor</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-02-01 18:31" data-date="2025-02-01T18:31:38">
-          <p><a href="https://github.com/block/goose">https://github.com/block/goose</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-02-01 18:31" data-date="2025-02-01T18:31:38">
+            <p><a href="https://github.com/block/goose">https://github.com/block/goose</a></p>
 <p><strong>Гусь</strong>  1.0.4</p>
 <p>Проект Goose - open source агент штучного інтелекту. Пропонує як інтерфейс робочого столу, так і інтерфейс командного рядка (CLI). Він використовує <a href="https://block.github.io/goose/v1/extensions/">розширення</a>  для підключення до існуючих інструментів та застосунків, таких як GitHub чи середовище розробки JetBrains, завдяки <a href="https://docs.anthropic.com/en/docs/build-with-claude/mcp">MCP</a>. Поки що каталог дуже мінімалістичний.</p>
 <p>Goose є багатофункціональним, підтримуючи різних постачальників LLM і здатний обробляти широкий спектр інженерних завдань, включаючи<br><em>міграцію коду, онбординг проекту мовами програмування, рефакторінг коду, оцінювання продуктивності, покращення покриття коду, створення каркаса API та генерацію модульних тестів</em>. </p>
 <p>Хоча спочатку він був орієнтований на engineering, його відкрита природа заохочує спільноту досліджувати різноманітні застосування.</p>
 <p>На щастя, не на Python, бо Rust. Підтримує macOS та Linux. У Windows тільки через WSL (<a href="https://uk.wikipedia.org/wiki/Windows_Subsystem_for_Linux">Windows Subsystem for Linux</a> ).</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-02-01 02:21" data-date="2025-02-01T02:21:06">
-          <p><img src="/img/2025-02-01-02-21-06.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-02-01 02:21" data-date="2025-02-01T02:21:06">
+            <p><img src="/img/2025-02-01-02-21-06.jpg" /></p>
 <p><a href="https://www.reddit.com/r/cursor/comments/1ienr72/o3mini_is_out_to_all_cursor_users/?rdt=53528">https://www.reddit.com/r/cursor/comments/1ienr72/o3mini_is_out_to_all_cursor_users/?rdt=53528</a> <a href="https://codeium.com/changelog">https://codeium.com/changelog</a> </p>
 <p>Windsurf Cascade та Cursor додали <a href="https://openai.com/index/openai-o3-mini/">o3-mini</a>  модель від openai</p>
 <p> #windsurf #cursor #newllmmodel</p>
 
+          </div>
         </div>
       
       

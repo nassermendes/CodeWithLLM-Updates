@@ -1,20 +1,16 @@
-// Базовые настройки сайта
 const siteUrl = 'https://aicode.danvoronov.com/';
 
-// Конфигурация источников постов
 const posts_source = {
     eng: [{year: 2024, path: 'eng_2024'}, {year: 2025, path: 'eng_2025'}],
     ukr: [{year: 2024, path: 'ukr_2024'}, {year: 2025, path: 'ukr_2025'}]   
 };
 
-// Допустимые расширения файлов
 const ALLOWED_EXTENSIONS = {
     markdown: ['.md'],
     images: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
     audio: ['.mp3', '.wav', '.ogg', '.m4a']
 };
 
-// Конфигурация меню
 const menuItems = [
     { 
         id: 'index',
@@ -44,7 +40,6 @@ const menuItems = [
     }
 ];
 
-// Настройки постов
 const postsConfig = {
     recentPostsCount: 12,
     monthNames: {

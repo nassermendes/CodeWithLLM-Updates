@@ -4,7 +4,6 @@ const mdToHtml = require('./md2html');
 const { commonStyles } = require('./styles');
 const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig } = require('./config');
 
-// Определяем publicDir глобально
 const publicDir = path.join(__dirname, 'public');
 
 function sleep(ms) {
@@ -21,13 +20,12 @@ async function removeDirectoryContentsWithRetry(dirPath, maxAttempts = 5) {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
         if (fs.lstatSync(curPath).isDirectory()) {
-          // Рекурсивно очищаем и удаляем поддиректории
           await removeDirectoryContentsWithRetry(curPath, maxAttempts);
           fs.rmdirSync(curPath);
         } else {
           fs.unlinkSync(curPath);
         }
-        break; // Если успешно, выходим из цикла попыток
+        break; 
       } catch (error) {
         if (attempt === maxAttempts) {
           console.error(`Не удалось удалить ${curPath} после ${maxAttempts} попыток`);
@@ -37,21 +35,6 @@ async function removeDirectoryContentsWithRetry(dirPath, maxAttempts = 5) {
         await sleep(1000);
       }
     }
-  }
-}
-
-// Старая функция остается для обратной совместимости
-function removeDirectory(dirPath) {
-  if (fs.existsSync(dirPath)) {
-    fs.readdirSync(dirPath).forEach(file => {
-      const curPath = path.join(dirPath, file);
-      if (fs.lstatSync(curPath).isDirectory()) {
-        removeDirectory(curPath);
-      } else {
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(dirPath);
   }
 }
 
@@ -65,17 +48,16 @@ function cleanUrl(url) {
 }
 
 function processLinks(content) {
-  // Сначала обработаем ссылки с текстом [Text](url)
+  
   content = content.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (match, text, url) => {
     if (text === url || text === cleanUrl(url)) {
-      // Это ссылка типа [url](url)
+      
       return `<a href="${url}">${cleanUrl(url)}</a>`;
     }
-    // Это ссылка с текстом [Text](url)
+
     return `<a href="${url}">${text}</a>`;
   });
 
-  // Затем обработаем чистые URL в тексте
   content = content.replace(/(?<!\]\()(https?:\/\/[^\s<)]+)/g, (url) => {
     return `<a href="${url}">${cleanUrl(url)}</a>`;
   });
@@ -92,14 +74,13 @@ function removeMetaTags(content) {
 }
 
 function getPostDate(filename, year = new Date().getFullYear(), month = 1) {
-  // Проверяем формат YYYY-MM-DD-HH-mm-ss.md
+
   const match = filename.match(/(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})(?:-(\d{2}))?.md/);
   if (match) {
     const [_, fileYear, fileMonth, day, hour, minute, second = '00'] = match;
     return `${fileYear}-${fileMonth}-${day}T${hour}:${minute}:${second}`;
   }
   
-  // Старый формат DD.md
   const day = parseInt(filename.split('.')[0]);
   if (isNaN(day) || day < 1 || day > 31) {
     return new Date().toISOString().split('.')[0];
@@ -167,42 +148,6 @@ function processLanguagePosts(langConfig) {
   return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-function savePostsToJson(posts, language) {
-  const jsonDir = path.join(__dirname, 'public', 'data');
-  if (!fs.existsSync(jsonDir)) {
-    fs.mkdirSync(jsonDir, { recursive: true });
-  }
-  
-  // Разбиваем посты на чанки по 30
-  const chunks = [];
-  for (let i = 30; i < posts.length; i += 30) {
-    chunks.push(posts.slice(i, i + 30));
-  }
-  
-  // Сохраняем каждый чанк в отдельный файл
-  chunks.forEach((chunk, index) => {
-    fs.writeFileSync(
-      path.join(jsonDir, `${language}_posts_${index + 1}.json`),
-      JSON.stringify(chunk)
-    );
-  });
-  
-  // Создаем мета-файл с информацией о чанках
-  const meta = {
-    totalPosts: posts.length,
-    chunks: chunks.length,
-    postsPerChunk: 30
-  };
-  
-  fs.writeFileSync(
-    path.join(jsonDir, `${language}_meta.json`),
-    JSON.stringify(meta)
-  );
-  
-  // Возвращаем первые 30 постов для встраивания в HTML
-  return posts.slice(0, 30);
-}
-
 function copyImages(sourcePath, targetPath) {
   if (!fs.existsSync(sourcePath)) return;
   
@@ -254,8 +199,10 @@ function createMonthArchivePage(posts, month, year, language, monthsData, curren
     <div class="container" style="grid-template-columns: 1fr">
       ${createArchiveNavigation(monthsData, currentMonth, language)}
       ${posts.map(post => `
-        <div class="post" data-title="${post.title}" data-date="${post.date}">
-          ${post.content}
+        <div class="post-wrapper">
+          <div class="post" data-title="${post.title}" data-date="${post.date}">
+            ${post.content}
+          </div>
         </div>
       `).join('\n')}
       ${createArchiveNavigation(monthsData, currentMonth, language)}
@@ -264,7 +211,7 @@ function createMonthArchivePage(posts, month, year, language, monthsData, curren
 }
 
 function createArchiveNavigation(monthsData, currentMonth, language) {
-  // Получаем все месяцы в плоский список
+
   const allMonths = [];
   Object.entries(monthsData).forEach(([year, months]) => {
     Object.keys(months).forEach(month => {
@@ -276,13 +223,12 @@ function createArchiveNavigation(monthsData, currentMonth, language) {
     });
   });
 
-  // Сортируем по дате (сначала новые)
+
   allMonths.sort((a, b) => {
     if (a.year !== b.year) return b.year - a.year;
     return b.month - a.month;
   });
 
-  // Находим текущий месяц
   const [currentYear, currentMonthStr] = currentMonth.split('-');
   const currentIndex = allMonths.findIndex(m => 
     m.year === parseInt(currentYear) && 
@@ -338,19 +284,15 @@ function createBlogContent(posts, language = 'en') {
     <div class="container" style="grid-template-columns: 1fr">
       <div class="posts">
         ${recentPosts.map(post => `
-          <div class="post" data-title="${post.title}" data-date="${post.date}">
-            ${post.content}
+          <div class="post-wrapper">
+            <div class="post" data-title="${post.title}" data-date="${post.date}">
+              ${post.content}
+            </div>
           </div>
         `).join('\n')}
       </div>
     </div>
   `;
-}
-
-function getFullUrl(path, prefix = '') {
-  // Убираем начальный слеш если он есть
-  const cleanPath = path.replace(/^\//, '');
-  return prefix + cleanPath;
 }
 
 function generateArchiveMenu(posts, language, currentMonth = '') {
@@ -378,6 +320,7 @@ function generateArchiveMenu(posts, language, currentMonth = '') {
                 `;
               }).join('')}
           </div>
+
         </div>
       `).join('\n')}
     </div>
@@ -385,11 +328,11 @@ function generateArchiveMenu(posts, language, currentMonth = '') {
 }
 
 function generateMenu(activeMenu, posts = [], currentMonth = '') {
-  // Определяем базовые параметры
+
   const activeItem = menuItems.find(item => item.id === activeMenu) || menuItems[0];
   const language = activeItem.lang || 'en';
 
-  // Формируем HTML меню
+
   return `
     <div class="nav">
       <button class="burger-menu" aria-label="Toggle menu">
@@ -410,13 +353,13 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
             </a>
           `;
 
-          // Добавляем архив после активного пункта, если нужно
           if (isActive && item.showArchive && posts.length > 0) {
             return itemHtml + generateArchiveMenu(posts, language, currentMonth);
           }
           return itemHtml;
         }).join('\n')}
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -456,7 +399,6 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
     </script>`;
 }
 
-// Функция для создания HTML страницы
 function createPage(title, content, activeMenu, posts = [], currentMonth = '') {
   const description = activeMenu === 'index' ? 
     'Updates and tips about using Large Language Models (LLM) for programming and development' :
@@ -499,33 +441,34 @@ function createPage(title, content, activeMenu, posts = [], currentMonth = '') {
   </html>`;
 }
 
-// Функция для создания простых страниц
+
 function createSimpleContent(content) {
   return `
     <div class="container" style="grid-template-columns: 1fr">
-      <div class="post">
-        ${content}
+      <div class="post-wrapper">
+        <div class="post">
+          ${content}
+        </div>
       </div>
     </div>`;
 }
 
 async function compile() {
   try {
-    // Создаем папку public если её нет
+
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir);
     }
     
-    // Очищаем содержимое папки public
+
     await removeDirectoryContentsWithRetry(publicDir);
 
-    // Создаем папку для изображений
+
     const imgDir = path.join(publicDir, 'img');
     if (!fs.existsSync(imgDir)) {
       fs.mkdirSync(imgDir);
     }
 
-    // Копируем favicon
     const faviconPngPath = path.join('.', 'favicon', 'favicon.png');
     const faviconIcoPath = path.join('.', 'favicon', 'favicon.ico');
     
@@ -541,7 +484,6 @@ async function compile() {
       console.warn('⚠️ favicon.ico не найден в папке favicon');
     }
 
-    // Копируем изображения из всех языковых директорий
     for (const lang of Object.values(posts_source)) {
       lang.forEach(({path: yearDir}) => {
         const yearPath = path.join('..', yearDir);
@@ -552,7 +494,6 @@ async function compile() {
     const engPosts = processLanguagePosts(posts_source.eng);
     const ukrPosts = processLanguagePosts(posts_source.ukr);
 
-    // Создаем архивные страницы только для месяцев с постами
     const engGrouped = groupPostsByYearAndMonth(engPosts);
     Object.entries(engGrouped).forEach(([year, months]) => {
       // Проверяем, что год существует в конфигурации

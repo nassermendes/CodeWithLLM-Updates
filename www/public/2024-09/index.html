@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -544,6 +571,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -612,6 +640,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,16 +722,19 @@
     </div>
   
       
-        <div class="post" data-title="2024-09-21 00:54" data-date="2024-09-21T00:54:29">
-          <p>in Cursor AI added o1-preview and o1-mini</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-21 00:54" data-date="2024-09-21T00:54:29">
+            <p>in Cursor AI added o1-preview and o1-mini</p>
 <p>since 09/19 OpenAI models o1-preview and o1-mini are now also in github copilot</p>
 <p><a href="https://github.blog/news-insights/product-news/try-out-openai-o1-in-github-copilot-and-models/">https://github.blog/news-insights/product-news/try-out-openai-o1-in-github-copilot-and-models/</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-09-13 17:11" data-date="2024-09-13T17:11:06">
-          <p><a href="https://youtu.be/eHz-xLSs50o">https://youtu.be/eHz-xLSs50o</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-13 17:11" data-date="2024-09-13T17:11:06">
+            <p><a href="https://youtu.be/eHz-xLSs50o">https://youtu.be/eHz-xLSs50o</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -718,11 +751,13 @@
 <p>⚠️ However, on complicating the task (make a 3d game in the browser), the o1 model also failed - the car did not move, demonstrating that the model <strong>has not yet reached the level of a human developer.</strong><br>🤖 Overall, the video shows that o1 is a more powerful model than Sonnet 3.5, but still has limitations and needs further improvement.</p>
 <p>Cool case - start the code with an expensive model, then finish with cheaper ones (from o1 to websim)</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-09-13 13:34" data-date="2024-09-13T13:34:42">
-          <p>In the near future, we expect programming cases with <strong>OpenAI o1</strong>  - I&#39;m following. Many say that it will solve very complex tasks</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-13 13:34" data-date="2024-09-13T13:34:42">
+            <p>In the near future, we expect programming cases with <strong>OpenAI o1</strong>  - I&#39;m following. Many say that it will solve very complex tasks</p>
 <p>also wondering how much it will cost to generate projects after the test stage</p>
 <p><a href="https://www.youtube.com/watch?v=50W4YeQdnSg">https://www.youtube.com/watch?v=50W4YeQdnSg</a></p>
 <p>
@@ -737,11 +772,13 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-09-12 00:43" data-date="2024-09-12T00:43:21">
-          <p>The Replit Agent is currently available through a limited early access program</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-12 00:43" data-date="2024-09-12T00:43:21">
+            <p>The Replit Agent is currently available through a limited early access program</p>
 <p><a href="https://youtu.be/IYiVPrxY8-Y">https://youtu.be/IYiVPrxY8-Y</a></p>
 <p>
             <div class="youtube-wrapper">
@@ -755,21 +792,25 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-09-12 00:39" data-date="2024-09-12T00:39:36">
-          <p>Phind-405B based on the Meta Llama 3.1 405B scores 92% on HumanEval (0-shot), matching Claude 3.5 Sonnet</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-12 00:39" data-date="2024-09-12T00:39:36">
+            <p>Phind-405B based on the Meta Llama 3.1 405B scores 92% on HumanEval (0-shot), matching Claude 3.5 Sonnet</p>
 <ul>
 <li>new Phind Instant model based on Meta Llama 3.1 8B (free)</li>
 </ul>
 <p><a href="https://www.phind.com/blog/introducing-phind-405b-and-better-faster-searches">https://www.phind.com/blog/introducing-phind-405b-and-better-faster-searches</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-09-10 23:11" data-date="2024-09-10T23:11:15">
-          <p>🌍 The article by Andrej Karpathy (2017), a popular researcher in the field of artificial intelligence and machine learning, analyzes a fundamental shift in the paradigm of software development. He makes a clear distinction between &quot;Software 1.0&quot; (traditional manual coding) and &quot;Software 2.0&quot; (AI model-oriented learning).</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-09-10 23:11" data-date="2024-09-10T23:11:15">
+            <p>🌍 The article by Andrej Karpathy (2017), a popular researcher in the field of artificial intelligence and machine learning, analyzes a fundamental shift in the paradigm of software development. He makes a clear distinction between &quot;Software 1.0&quot; (traditional manual coding) and &quot;Software 2.0&quot; (AI model-oriented learning).</p>
 <p>🧠 Karpathy argues that neural networks are not just another tool in the machine learning kit, but the beginning of a new software paradigm. Unlike explicit coding in SW 1.0, SW 2.0 relies on training models through large amounts of data to identify patterns and rules.</p>
 <p>🚘 This transition is already observed in areas such as computer vision, speech recognition, machine translation, and autonomous vehicles, where neural networks outperform traditional algorithms.</p>
 <p>📚 However, Karpathy acknowledges certain challenges associated with the transition to SW 2.0. In particular, he notes that programming through adjusting the weights and biases of neural networks is much less intuitive and understandable for people than traditional coding.</p>
@@ -788,6 +829,7 @@
             </div>
           </p>
 
+          </div>
         </div>
       
       

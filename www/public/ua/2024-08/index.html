@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -550,6 +577,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -618,6 +646,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,21 +722,25 @@
     </div>
   
       
-        <div class="post" data-title="2024-08-21 20:39" data-date="2024-08-21T20:39:31">
-          <p><a href="https://cosine.sh/blog/genie-technical-report">https://cosine.sh/blog/genie-technical-report</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-08-21 20:39" data-date="2024-08-21T20:39:31">
+            <p><a href="https://cosine.sh/blog/genie-technical-report">https://cosine.sh/blog/genie-technical-report</a> </p>
 <p>Компанія Ccosine презентувала ШІ модель Genie <strong>спеціально</strong>  для програмної інженерії (автоматичного написання коду як то Devin). Говорять, була навчена на спеціальних даних, що відтворюють логіку та процеси роботи програмістів. </p>
 <p>Говорять, модель здатна:<br>    Аналізувати та розбивати складні проблеми на менші завдання.<br>    Шукати та знаходити відповідні фрагменти коду для внесення змін.<br>    Генерувати, перевіряти та покращувати код, вирішуючи завдання так, як це робить інженер.<br>    Виконувати широкий спектр завдань, від розробки нових функцій до виправлення багів, рефакторингу та написання тестів.</p>
 <p>Genie адаптується до різних мов програмування.</p>
 <p>Наразі доступ до Genie можливий лише через вейтлист.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-08-07 12:43" data-date="2024-08-07T12:43:33">
-          <p><img src="/img/2024-08-07-12-43-33.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-08-07 12:43" data-date="2024-08-07T12:43:33">
+            <p><img src="/img/2024-08-07-12-43-33.jpg" /></p>
 <p>Статистика <a href="https://chat.lmsys.org/?arena">LMSYS Chatbot Arena</a>  - у всіх нові версії моделей кращі ніж попередні. </p>
 <p>Клод 3.5 поки що є тільки середнього розміру (Sonnet), але вона в зв&#39;язці з ідею <strong>Artifacts</strong>  у браузері обходить зараз усе інше</p>
 
+          </div>
         </div>
       
       

@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -550,6 +577,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -618,6 +646,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,18 +722,21 @@
     </div>
   
       
-        <div class="post" data-title="2025-01-30 23:36" data-date="2025-01-30T23:36:07">
-          <p><img src="/img/2025-01-30-23-36-07.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-30 23:36" data-date="2025-01-30T23:36:07">
+            <p><img src="/img/2025-01-30-23-36-07.jpg" /></p>
 <p><a href="https://www.cursor.com/changelog">https://www.cursor.com/changelog</a><strong>Cursor</strong> </p>
 <p>DeepSeek моделі: <em>DeepSeek R1 та DeepSeek v3 підтримуються у версіях 0.45 та 0.44. Ви можете увімкнути їх у Settings &gt; Models. Ми хостимо ці моделі в США.</em> </p>
 <p>Але composer (автоматична система написання коду) все одно підтримує наразі тільки застарілі GPT-4o чи Claude-3.5. У чаті з r1 тег <think> не є прихованим блоком.</p>
 <p>#cursor #newllmmodel</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-30 11:42" data-date="2025-01-30T11:42:43">
-          <p><a href="https://www.all-hands.dev/">https://www.all-hands.dev/</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-30 11:42" data-date="2025-01-30T11:42:43">
+            <p><a href="https://www.all-hands.dev/">https://www.all-hands.dev/</a></p>
 <p><strong>All Hands OpenHands</strong><br>(раніше OpenDevin)</p>
 <p>Open Source Python інструмент, натхнений <a href="https://app.devin.ai/">Devin</a> &#39;ом, запуску агентів для програмування: пише код, виконує команди, заходить в інтернет. </p>
 <p>Запускається через Docker, радять використовувати anthropic/claude-3-5-sonnet-20241022, але можна і Gemini, і DeepSeek - налаштовується через введення API-ключа. Рішення автоматичне з великою кількістю запитів, тому токенів споживає багато.</p>
@@ -721,11 +754,13 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-30 01:19" data-date="2025-01-30T01:19:47">
-          <p><a href="https://github.com/RooVetGit/Roo-Code">https://github.com/RooVetGit/Roo-Code</a><br>плагін активно змінюєтся від просто автоматичного редактора коду до оркестрації різних агентів зі своїми промтами та обмеженнями.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-30 01:19" data-date="2025-01-30T01:19:47">
+            <p><a href="https://github.com/RooVetGit/Roo-Code">https://github.com/RooVetGit/Roo-Code</a><br>плагін активно змінюєтся від просто автоматичного редактора коду до оркестрації різних агентів зі своїми промтами та обмеженнями.</p>
 <p><strong>Оновлення Roo Code</strong>  (prev. Roo Cline) v 3.3</p>
 <p>Code Actions</p>
 <p>Roo Code тепер інтегрується безпосередньо з рідною системою Code Actions VS Code, надаючи швидкі виправлення та опції рефакторингу прямо у редакторі. Шукайте над кодом лампочку 💡</p>
@@ -737,19 +772,23 @@
 **Самостійне перемикання режиму**: режими можуть розумно запитувати перемикання між собою залежно від завдання. Наприклад, режим &quot;Code&quot; може запитувати перемикання на режим &quot;Test Engineer &quot;, коли він готовий писати тести.
 </code></pre>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-28 12:14" data-date="2025-01-28T12:14:04">
-          <p><a href="https://www.technologyreview.com/2025/01/20/1110180/the-second-wave-of-ai-coding-is-here/">https://www.technologyreview.com/2025/01/20/1110180/the-second-wave-of-ai-coding-is-here/</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-28 12:14" data-date="2025-01-28T12:14:04">
+            <p><a href="https://www.technologyreview.com/2025/01/20/1110180/the-second-wave-of-ai-coding-is-here/">https://www.technologyreview.com/2025/01/20/1110180/the-second-wave-of-ai-coding-is-here/</a> </p>
 <p>У статті ті, хто зараз розповідають, як їхні моделі та сервіси для програмістів незабаром замінять тисячі розробників, але поки що радіють намахати хоча б одного інвестора:</p>
 <p><a href="https://zencoder.ai/">https://zencoder.ai/</a>  (try for free з цінами)<br><a href="https://www.merly.ai/">https://www.merly.ai/</a>  (trial без ціни)<br><a href="https://cosine.sh/">https://cosine.sh/</a>    (waitlist)<br><a href="https://www.tessl.io/">https://www.tessl.io/</a>   (waitlist)<br><a href="https://www.poolside.ai/">https://www.poolside.ai/</a>  (схоже B2B)</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-27 18:22" data-date="2025-01-27T18:22:36">
-          <p><a href="https://www.youtube.com/watch?v=itsGX3UioLk">https://www.youtube.com/watch?v=itsGX3UioLk</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-27 18:22" data-date="2025-01-27T18:22:36">
+            <p><a href="https://www.youtube.com/watch?v=itsGX3UioLk">https://www.youtube.com/watch?v=itsGX3UioLk</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -764,11 +803,13 @@
 <p>Генерація драфту сайту за допомогою <a href="https://bolt.new/">bolt.new</a>  коли запит для нього створює <a href="https://infranodus.com/">infranodus.com</a>  (є тріал на два тиждні) аналізуючи диру між попитом та пропозицією, в данному випадку нерухомості у Берліні та випадку здорової їжі.</p>
 <p> #bolt</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-27 13:29" data-date="2025-01-27T13:29:16">
-          <p><a href="https://www.youtube.com/watch?v=yHDvCGNjIqk">https://www.youtube.com/watch?v=yHDvCGNjIqk</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-27 13:29" data-date="2025-01-27T13:29:16">
+            <p><a href="https://www.youtube.com/watch?v=yHDvCGNjIqk">https://www.youtube.com/watch?v=yHDvCGNjIqk</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -801,55 +842,67 @@
 </ul>
 <p>PS від мене: <a href="https://lovable.dev/">Lovable</a>  це закритий продукт (раніше GPT Engineer), де безкоштовно 5 запитів/день та не можна зберігти код напряму. <a href="https://github.com/stackblitz/bolt.new">Bolt.new</a>  та форк <a href="https://github.com/stackblitz-labs/bolt.diy">bolt.diy</a>  доступні на гітхаб — можна встановити на свій ком&#39;ютер, чи використовувати сайт <a href="https://bolt.new/">bolt.new</a><br> #bolt #lovable</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-25 20:03" data-date="2025-01-25T20:03:12">
-          <p><img src="/img/2025-01-25-20-03-12.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-25 20:03" data-date="2025-01-25T20:03:12">
+            <p><img src="/img/2025-01-25-20-03-12.jpg" /></p>
 <p>OpenAI агент Operator (новина на <a href="https://techcrunch.com/2025/01/23/openai-launches-operator-an-ai-agent-that-performs-tasks-autonomously/">techcrunch</a> ) через <a href="https://aistudio.google.com/prompts/new_chat">гугул ШІ</a>  Google AI Studio та Репліт может створити сайт =)</p>
 <p><a href="https://x.com/daniel_mac8/status/1882636983475855592?mx=2">X</a><br> #newllmmodel</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-25 12:26" data-date="2025-01-25T12:26:05">
-          <p><a href="https://www.trae.ai/home">https://www.trae.ai/home</a><em>наразі є тільки версія під MacOS, бо кому потрібен цей ваш Windows?</em><strong>Trae</strong>  V1.0.1 (January 23, 2025)</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-25 12:26" data-date="2025-01-25T12:26:05">
+            <p><a href="https://www.trae.ai/home">https://www.trae.ai/home</a><em>наразі є тільки версія під MacOS, бо кому потрібен цей ваш Windows?</em><strong>Trae</strong>  V1.0.1 (January 23, 2025)</p>
 <p>Ще один &quot;геніальний&quot; винахід від китайскої ByteDance - тепер, крім того, що вони разом з китайскою розвідкою стежать за танцями в TikTok, вони вирішили стежити за всіми хто пише код. </p>
 <p>(за <a href="https://www.trae.ai/privacy-policy">Trae Privacy Policy</a>  вони можуть не тільки зберігати &quot;код, текст, фотографії, файли, відгуки, історію чату або будь-який інший контент, який ви можете завантажити на Платформу&quot; (When you interact with the Platform, we may collect code, text, photographs, files, feedback, chat history, or any other content that you may upload to the Platform, and the associated metadata), а також брати код для &quot;навчання та вдосконалення своїх технологій&quot;)</p>
 <p>Назвали вони свій диво клон Курсора - <strong>Trae</strong>.<br>Має &quot;вбудований доступ до GPT-4o і Claude-3.5-Sonnet&quot;. А де DeekSeek?</p>
 <p> #trae</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-23 12:07" data-date="2025-01-23T12:07:59">
-          <p><img src="/img/2025-01-23-12-07-59.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-23 12:07" data-date="2025-01-23T12:07:59">
+            <p><img src="/img/2025-01-23-12-07-59.jpg" /></p>
 <p>Doriandarko (Pietro Schirano) cтворює асистентів для програмістів поверх найпоширеніших топових LLM моделей. </p>
 <p>Це скрипти Python, які працюють із командного рядка (можна відкрити у вкладці Terminal у VS Code). Схоже на Aider, але простіше.</p>
 <p><a href="https://github.com/Doriandarko/deepseek-engineer">https://github.com/Doriandarko/deepseek-engineer</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-22 16:22" data-date="2025-01-22T16:22:44">
-          <p><a href="https://github.com/yuaotian/go-cursor-help">https://github.com/yuaotian/go-cursor-help</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-22 16:22" data-date="2025-01-22T16:22:44">
+            <p><a href="https://github.com/yuaotian/go-cursor-help">https://github.com/yuaotian/go-cursor-help</a> </p>
 <p>Якщо з якихось причин вам не вдається використовувати тріал Cursor (<a href="https://github.com/getcursor/cursor/issues/2459">це поширена проблема</a> ), то китайці і тут добралися і зробили скрипти для виправлення.</p>
 <p> #cursor</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-22 12:04" data-date="2025-01-22T12:04:09">
-          <p><a href="https://github.com/cline/cline/releases/tag/v3.2.0">https://github.com/cline/cline/releases/tag/v3.2.0</a><strong>Оновлення Cline****3.2</strong> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-22 12:04" data-date="2025-01-22T12:04:09">
+            <p><a href="https://github.com/cline/cline/releases/tag/v3.2.0">https://github.com/cline/cline/releases/tag/v3.2.0</a><strong>Оновлення Cline****3.2</strong> </p>
 <p>Звісно додали <em>deepseek-reasoner</em>  модель</p>
 <p>Круто що форк Roo Cline (тепер назва <a href="https://github.com/RooVetGit/Roo-Code">Roo Code</a> ) щось робить під тест, як це було створення кастомних ролей агенту, а у Cline це додаєтся вже продумано, як зараз це перемикач режиму Plan/Act зі зміною кольору поля запиту.</p>
 <p> #cline</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-22 11:26" data-date="2025-01-22T11:26:57">
-          <p><a href="https://github.com/PatrickJS/awesome-cursorrules">https://github.com/PatrickJS/awesome-cursorrules</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-22 11:26" data-date="2025-01-22T11:26:57">
+            <p><a href="https://github.com/PatrickJS/awesome-cursorrules">https://github.com/PatrickJS/awesome-cursorrules</a> </p>
 <p>Каталог прикладів додаткових запитів для проектів. </p>
 <ul>
 <li>Frontend Frameworks and Libraries</li>
@@ -864,32 +917,38 @@
 <p>Проект Nuxt 3:</p>
 <p>Буде працювати й у Windsurf там файл .windsurfrules<br>й у Cline там .clinerules<br>й у Aider там<a href="https://aider.chat/docs/usage/conventions.html"> CONVENTIONS.md та конфіг</a><br> #windsurf #cursor #aider</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-21 11:50" data-date="2025-01-21T11:50:13">
-          <p><a href="https://api-docs.deepseek.com/news/news250120">https://api-docs.deepseek.com/news/news250120</a><strong>DeepSeek-R1</strong> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-21 11:50" data-date="2025-01-21T11:50:13">
+            <p><a href="https://api-docs.deepseek.com/news/news250120">https://api-docs.deepseek.com/news/news250120</a><strong>DeepSeek-R1</strong> </p>
 <p>Китайський стартап DeepSeek продовжує нас радувати дешевими клонами. Ось вони й добралися до openai о1.</p>
 <p>Через API, якщо використовувати (<a href="https://platform.deepseek.com/api_keys">прямо</a>  чи через <a href="https://openrouter.ai/deepseek/deepseek-r1">openrouter</a> ), треба платити - підійде вже згенерований ключ, просто треба змінити модель на deepseek-reasoner.  Коштує у 4 рази дешевше, ніж o1. </p>
 <p>Зараз в Cline та Aider немає її у списку - чекаємо на апдейти. Але вже можна через OpenRouter прокинути свій апі ключ DeepSeek, чи заплатити їм.</p>
 <p>Через <a href="https://chat.deepseek.com/">веб-інтерфейс</a>  та їхню нову програму для телефонів можна використовувати безкоштовно. Кэнвас/Артефактс поки що не скопіювали.</p>
 <p> #newllmmodel</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-20 12:14" data-date="2025-01-20T12:14:02">
-          <p><a href="https://codeium.com/changelog">https://codeium.com/changelog</a><strong>Windsurf  оновлення 1.2.1</strong> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-20 12:14" data-date="2025-01-20T12:14:02">
+            <p><a href="https://codeium.com/changelog">https://codeium.com/changelog</a><strong>Windsurf  оновлення 1.2.1</strong> </p>
 <p>Cascade тепер може автоматично виконувати <strong>веб-пошук</strong>, якщо запит вимагає актуальної інформації з інтернету. Для явного запиту пошуку можна використовувати команду @web, а для пошуку у популярній документації (включаючи власну довідку Windsurf) - команду .</p>
 <p>Може використовувати URL-адреси як контекст, що корисно при роботі зі статтями, документацією та файлами з GitHub.  </p>
 <p><strong>Автоматичне створення пам</strong> &#39;<strong>яток</strong>  (Memories)<br>Cascade тепер автоматично створює &quot;пам&#39;ятки&quot; для збереження контексту між розмовами. Користувачі можуть вручну викликати створення &quot;пам&#39;яток&quot;. Відображаються в спеціальній панелі та можуть бути видалені.</p>
 <p>Все це разом називаєтся Windsurf <strong>Wave 2</strong> <a href="https://codeium.com/blog/windsurf-wave-2">https://codeium.com/blog/windsurf-wave-2</a><br> #windsurf</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-19 10:19" data-date="2025-01-19T10:19:47">
-          <p><a href="https://mistral.ai/news/codestral-2501/">https://mistral.ai/news/codestral-2501/</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-19 10:19" data-date="2025-01-19T10:19:47">
+            <p><a href="https://mistral.ai/news/codestral-2501/">https://mistral.ai/news/codestral-2501/</a> </p>
 <p>Компанія Mistral AI представила оновлену модель <strong>Codestral 25.01</strong>, яка покращує швидкість та точність генерації коду, особливо у задачах &quot;заповнення пропусків&quot; (fill-in-the-middle, FIM). </p>
 <p><em>Дійсно швидко генерує. Чомусь модель стала гірше у Java, але додала % HumanEval у Python / С++ / Javascript</em> </p>
 <p>Перевірити можна через <a href="Continue.dev">Continue.dev</a>  чи по openai сумісному АПІ (модель codestral-latest) - <a href="https://console.mistral.ai/codestral">ключ у консолі</a> </p>
@@ -900,19 +959,23 @@
 </ul>
 <p> #newllmmodel</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-18 14:27" data-date="2025-01-18T14:27:07">
-          <p><a href="https://thegroundtruth.substack.com/p/devin-first-impressions">https://thegroundtruth.substack.com/p/devin-first-impressions</a> <a href="https://app.devin.ai/">Devin</a>  (v1.1.0, as of 15 January 2025) - перспективний інструмент з найкращим UX серед аналогів, але ще на ранній стадії розвитку. </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-18 14:27" data-date="2025-01-18T14:27:07">
+            <p><a href="https://thegroundtruth.substack.com/p/devin-first-impressions">https://thegroundtruth.substack.com/p/devin-first-impressions</a> <a href="https://app.devin.ai/">Devin</a>  (v1.1.0, as of 15 January 2025) - перспективний інструмент з найкращим UX серед аналогів, але ще на ранній стадії розвитку. </p>
 <p><em>Потенційно може суттєво змінити процес розробки ПЗ після усунення поточних недоліків. Наразі, на думку автора, вартує своїх 500$ на місяць.__(Варто відзначити, що на сторінці тарифного плану 500$ вказано як &quot;ціну зі знижкою&quot;, тоді як початкова закреслена ціна становить 1250$)</em><strong>Основні переваги:</strong><br>Має зручний інтерфейс та просте налаштування. Він демонструє високу швидкість виконання простих завдань. Цікавою особливістю є здатність аналізувати (“visually see“) веб-сторінки за допомогою скріншотів. Devin також підтримує паралельну роботу над декількома задачами та в окремих випадках може приймати інтелектуальні рішення, наприклад, автоматизувати повторювані дії.</p>
 <p><strong>Основні недоліки:</strong><br>Повільно працює зі складнішими задачами, що вимагають рефакторингу чи налагодження коду. Іноді потрапляє в нескінченний цикл редагування. Його можливості обмежені: відсутній доступ до сайтів з аутентифікацією (наприклад, не може відвідати веб-сайт GitHub і побачити створений PR). Спостерігається зниження продуктивності при тривалій сессії (2.5 годин чи 10 ACUs), а також труднощі з використанням бази знань.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-16 22:54" data-date="2025-01-16T22:54:36">
-          <p><a href="https://youtu.be/AtuB7p-JU8Y">https://youtu.be/AtuB7p-JU8Y</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-16 22:54" data-date="2025-01-16T22:54:36">
+            <p><a href="https://youtu.be/AtuB7p-JU8Y">https://youtu.be/AtuB7p-JU8Y</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -930,11 +993,13 @@
 <p>Перше просте завдання обидва виконали за 1 хв, але Cline повернув поламаний код, на завданні 3 він &quot;зациклювався&quot;. </p>
 <p>Тобто Cursor Composer переміг 3 з 3.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-14 13:25" data-date="2025-01-14T13:25:34">
-          <p><a href="https://lovable.dev/">lovable.dev</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-14 13:25" data-date="2025-01-14T13:25:34">
+            <p><a href="https://lovable.dev/">lovable.dev</a> </p>
 <p>Платформа для автоматичної генерації фулстеку підходом &quot;Prompt to edit&quot;. </p>
 <p>Безкоштовно згенеровані проекти потрапляють до публічного каталогу і поверх проектів інших можна продовжувати робити щось своє. Також є шаблони. Безкоштовно дають 5 чат повідомлень у день. Немає завантаження собі на диск, але є можливіть після до себе в гітхаб експортувати як репозиторій.</p>
 <p>У беті зараз функція інтеграції з supabase (автентифікація та бд)</p>
@@ -951,36 +1016,44 @@
             </div>
           </p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-09 16:12" data-date="2025-01-09T16:12:02">
-          <p><img src="/img/2025-01-09-16-12-02.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-09 16:12" data-date="2025-01-09T16:12:02">
+            <p><img src="/img/2025-01-09-16-12-02.jpg" /></p>
 <p><strong>Cline</strong>   v3.1 оновлення</p>
 <p>Тепер зберігає DIFF змін на кожному кроці завдання. Дві нові функції:</p>
 <p><strong>Порівняти</strong>  (see new changes) показує різницю між знімком і поточним робочим простором по кожному з файлів.</p>
 <p><strong>Відновити</strong>  дозволяє повернути файли чи будь-які частини проекту до цієї точки в завданні.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-08 23:05" data-date="2025-01-08T23:05:19">
-          <p><strong>AiDE</strong>  забезпечує структурований підхід до розробки проектів із допомогою штучного інтелекту. Framework пропронує стандартизований спосіб розуміння штучним інтелектом контексту вашого проекту та ведення документації.</p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-08 23:05" data-date="2025-01-08T23:05:19">
+            <p><strong>AiDE</strong>  забезпечує структурований підхід до розробки проектів із допомогою штучного інтелекту. Framework пропронує стандартизований спосіб розуміння штучним інтелектом контексту вашого проекту та ведення документації.</p>
 <p><a href="https://github.com/FixingPixels/AiDE">https://github.com/FixingPixels/AiDE</a> </p>
 <p>є кастомний GPT</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-07 17:29" data-date="2025-01-07T17:29:44">
-          <p><img src="/img/2025-01-07-17-29-44.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-07 17:29" data-date="2025-01-07T17:29:44">
+            <p><img src="/img/2025-01-07-17-29-44.jpg" /></p>
 <p>5ки вийшли... чекаємо тестів, як на цьому буде бігати Llama-3.3-70b-specdec</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-06 19:06" data-date="2025-01-06T19:06:08">
-          <p><a href="https://nmn.gl/blog/ai-senior-developer">https://nmn.gl/blog/ai-senior-developer</a><br>та з коментів <a href="https://nmn.gl/blog/hn-rank-1-analysis">https://nmn.gl/blog/hn-rank-1-analysis</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-06 19:06" data-date="2025-01-06T19:06:08">
+            <p><a href="https://nmn.gl/blog/ai-senior-developer">https://nmn.gl/blog/ai-senior-developer</a><br>та з коментів <a href="https://nmn.gl/blog/hn-rank-1-analysis">https://nmn.gl/blog/hn-rank-1-analysis</a> </p>
 <p>Аналізатор коду, аналізуючи лінійно, часто застрягав у деталях. Щоб покращити аналіз, ми змінили підхід, моделюючи спосіб мислення (Mindset) досвідчених розробників:</p>
 <p><strong>📝 Групування файлів</strong>: файли згруповані за функціональністю (наприклад, &quot;аутентифікація&quot;, &quot;база даних&quot;).</p>
 <p><strong>ℹ️ Контекст</strong>: додаєтся опис про функціональність групи в рамках всієї архетектури перед аналізом коду. Аналіз впливу: розглядати зміни відносно <strong>усієї</strong>  системи</p>
@@ -988,21 +1061,25 @@
 <p>промт до группи</p>
 <p>Результатом стало покращення якості розуміння, від простих спостережень до виявлення потенційних проблем, як-от конфлікти та зв&#39;язки між компонентами.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-05 13:09" data-date="2025-01-05T13:09:01">
-          <p><img src="/img/2025-01-05-13-09-01.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-05 13:09" data-date="2025-01-05T13:09:01">
+            <p><img src="/img/2025-01-05-13-09-01.jpg" /></p>
 <p><strong>Aider LLM Leaderboards</strong> <a href="https://aider.chat/docs/leaderboards/">https://aider.chat/docs/leaderboards/</a> </p>
 <p>Polyglot тест вимірює здатність LLM програмувати популярними мовами.</p>
 <p>Aider найкраще працює з LLM, які добре вміють <em>редагувати</em>  код, а не просто добре генерують код. Щоб оцінити навички редагування LLM, Aider використовує тести, які оцінюють здатність моделі послідовно дотримуватися системних підказок, щоб успішно редагувати код.</p>
 <p>На початку 2025 року несподівано китайський <strong>DeepSeek V3</strong>  (671B MoE) дуже добре себе показує. Зараз ще у них знижки до 8 лютого на токени, ну і ціна $0.14/M input $0.28/M output [але контекстне вікно зарізане] (можна <a href="https://openrouter.ai/deepseek/deepseek-chat">купувати на openrouter</a> ) ні в яке порівняння з о1 та claude-3.5-sonnet не йде.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2025-01-04 13:58" data-date="2025-01-04T13:58:12">
-          <p>Два тижні тому <a href="https://github.com/cline/cline/releases/tag/v3.0.0">вийшла версія три</a>  VSC плагіна <strong>Cline</strong>  (prev. Claude Dev). Він як Composer у Cursor чи Cascade у Windsurf але не залочен на приватні підписки. </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2025-01-04 13:58" data-date="2025-01-04T13:58:12">
+            <p>Два тижні тому <a href="https://github.com/cline/cline/releases/tag/v3.0.0">вийшла версія три</a>  VSC плагіна <strong>Cline</strong>  (prev. Claude Dev). Він як Composer у Cursor чи Cascade у Windsurf але не залочен на приватні підписки. </p>
 <p><a href="https://open-vsx.org/extension/saoudrizwan/claude-dev">https://open-vsx.org/extension/saoudrizwan/claude-dev</a> </p>
 <p>Дві дуже приємні функції:</p>
 <ul>
@@ -1015,6 +1092,7 @@
 <p><em>Проблема, звичайно ж, у тому, що тепер кожен апп називає цей файл як хоче (cursorrules, windsurfrules) і не домовилися до стандару</em>.</p>
 <p>форк <strong>Roo-Cline</strong>  досі на v2</p>
 
+          </div>
         </div>
       
       

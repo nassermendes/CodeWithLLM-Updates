@@ -65,12 +65,28 @@
     box-sizing: border-box;
     padding: 1rem;
   }
+  .post-wrapper {
+    position: relative;
+    padding: 4px;
+    margin-bottom: 20px;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
+  .post-wrapper:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: borderOpacity 0.3s ease;
+    @keyframes borderOpacity {
+      0% { border-opacity: 0.3; }
+      100% { border-opacity: 0.5; }
+    }
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+  }
   .post {
     background: rgba(255, 255, 255, 0.98);
     padding: 20px 40px 20px 60px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -130,7 +146,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title a {
@@ -145,9 +160,10 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    margin-top: 30px;
+    padding-top: 30px;    
     width: 100%;
     align-items: center;
+    flex: 1;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
@@ -179,6 +195,9 @@
     background-color: rgba(51, 51, 51, 0.9);
     backdrop-filter: blur(10px);
     z-index: 1001;
+  }
+  .github-stars:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
     fill: white;
@@ -329,7 +348,6 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    margin: 20px 0;
     gap: 20px;
   }
 
@@ -344,9 +362,8 @@
   .nav-current {
     font-weight: 500;
     color: #333;
-    padding: 12px 24px;
+    padding: 0 100px;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -501,6 +518,16 @@
     transform: rotate(-45deg);
     bottom: 11px;
   }
+
+  .copyright {
+    padding: 30px;
+    color: #666;
+    font-size: 0.8em;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+  }
 </style>
   
     <!-- Добавляем favicon -->
@@ -544,6 +571,7 @@
                   </a>
                 
           </div>
+
         </div>
       
 
@@ -612,6 +640,7 @@
                   </a>
                 
           </div>
+
         </div>
       
     </div>
@@ -635,6 +664,7 @@
             </a>
           
       </div>
+      <div class="copyright">© Dan Voronov</div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
@@ -692,8 +722,9 @@
     </div>
   
       
-        <div class="post" data-title="2024-11-25 18:44" data-date="2024-11-25T18:44:34">
-          <p><a href="https://www.youtube.com/watch?v=1QaXyA3iwig">https://www.youtube.com/watch?v=1QaXyA3iwig</a></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-11-25 18:44" data-date="2024-11-25T18:44:34">
+            <p><a href="https://www.youtube.com/watch?v=1QaXyA3iwig">https://www.youtube.com/watch?v=1QaXyA3iwig</a></p>
 <p>
             <div class="youtube-wrapper">
               <iframe 
@@ -710,20 +741,24 @@
 <p>⚠️ The key point is that the role of the developer is changing - now more time is spent reviewing and evaluating what the AI has generated, instead of directly writing code.</p>
 <p>Patrick talks about mechanisms to facilitate this process, such as automatic change highlighting, step-by-step presentation of results, and feedback.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-11-20 12:50" data-date="2024-11-20T12:50:41">
-          <p><img src="/img/2024-11-20-12-50-41.jpg" /></p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-11-20 12:50" data-date="2024-11-20T12:50:41">
+            <p><img src="/img/2024-11-20-12-50-41.jpg" /></p>
 <p>The European company Mistral has released an update for <a href="https://chat.mistral.ai/chat">its online chat</a>  le Chat to catch up with both OpenAI and Anthropic. Currently in the free beta stage.</p>
 <p>Now they also have an editor mode <strong>Canvas</strong>  - and if you select a piece of code in it, an inline query window appears.</p>
 <p>news announcement: <a href="https://mistral.ai/news/mistral-chat/">https://mistral.ai/news/mistral-chat/</a></p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-11-17 00:58" data-date="2024-11-17T00:58:15">
-          <p>In recent days, the model has been actively promoted on the internet for some reason <strong>Qwen 2.5 Coder</strong> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-11-17 00:58" data-date="2024-11-17T00:58:15">
+            <p>In recent days, the model has been actively promoted on the internet for some reason <strong>Qwen 2.5 Coder</strong> </p>
 <p>For connoisseurs of perversions <a href="https://www.youtube.com/watch?v=Q_sy45XggeM">here is a video</a> </p>
 <p>
             <div class="youtube-wrapper">
@@ -738,15 +773,18 @@
           </p>
 <p> that demonstrates how to effectively combine the AI code editor Cursor with a local Qwen 2.5 3b or 14b (or 32b if you have a MacBook with an M chip) by installing an LM Studio server with CORS settings and using Ngrok to provide access through a public domain.</p>
 
+          </div>
         </div>
       
 
-        <div class="post" data-title="2024-11-05 17:38" data-date="2024-11-05T17:38:02">
-          <p><strong>⚙️</strong> <a href="Bolt.new">Bolt.new</a><strong>Fork by Cole Medin</strong> <a href="https://github.com/coleam00/bolt.new-any-llm">github</a> </p>
+        <div class="post-wrapper">
+          <div class="post" data-title="2024-11-05 17:38" data-date="2024-11-05T17:38:02">
+            <p><strong>⚙️</strong> <a href="Bolt.new">Bolt.new</a><strong>Fork by Cole Medin</strong> <a href="https://github.com/coleam00/bolt.new-any-llm">github</a> </p>
 <p>a fork of the repository <a href="Bolt.new">Bolt.new</a>  by StackBlitz (automatic creation of full-fledged web applications directly in the browser using Claude Sonnet 3.5), which allows using different LLM providers such as OpenRouter, Gemini, DeepSeek, Mistral and &quot;Open AI Like&quot; (for example, sambanova)</p>
 <p>Also added the ability to Docker containerize the application to simplify installation and publish projects directly to GitHub.</p>
 <p>next in line deploy to Vercel/Netlify and Voice prompting</p>
 
+          </div>
         </div>
       
       
