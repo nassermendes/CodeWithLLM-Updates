@@ -1,12 +1,27 @@
 // Общие стили для всего сайта
 const commonStyles = `
   body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #ff8c42, #ff5f6d, #ff4088);
+
+    background: #FFBF56;
+    background: radial-gradient(at right bottom, #FFBF56, #D27546);
+ 
     min-height: 100vh;
     color: #333;
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
   .wrapper {
     position: relative;
@@ -14,6 +29,7 @@ const commonStyles = `
     margin: 0 auto;
     padding: 60px 20px 20px;
     box-sizing: border-box;
+    margin-left: 200px;
   }
   .container {
     display: grid;
@@ -25,7 +41,7 @@ const commonStyles = `
   }
   .post {
     background: rgba(255, 255, 255, 0.98);
-    padding: 20px;
+    padding: 20px 40px 20px 60px;
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -34,6 +50,22 @@ const commonStyles = `
     word-break: break-word;
     max-width: 100%;
     backdrop-filter: blur(10px);
+    position: relative;
+  }
+  .post::before {
+    content: attr(data-title);
+    position: absolute;
+    left: 0;
+    top: 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    background: #333;
+    color: white;
+    margin: 0;
+    padding: 15px 5px;
+    height: 120px;
+    font-size: 0.8em;
+    justify-content: center;
   }
   .post img {
     max-width: 100%;
@@ -56,7 +88,6 @@ const commonStyles = `
     top: 20px;
     background: rgba(255, 255, 255, 0.98);
     padding: 20px;
-    border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     height: fit-content;
     backdrop-filter: blur(10px);
@@ -64,39 +95,38 @@ const commonStyles = `
   .nav {
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 1200px;
+    left: 0;
+    width: 190px;
+    height: 100vh;
     z-index: 1000;
-    margin-bottom: 0;
-    text-align: center;
-    background: rgba(33, 33, 33, 0.95);
-    padding: 15px 20px;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    background: #333333;
+    padding: 20px 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    backdrop-filter: blur(10px);
-    box-sizing: border-box;
+    justify-content: flex-start;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
   .nav .site-title {
     font-weight: bold;
     font-size: 1.2em;
-    margin-left: 15px;
-    color: white;
+    margin: 10px 0;
+    color: #ff8c42;
+    white-space: nowrap;
+    padding: 0 10px;
   }
   .nav .menu {
     display: flex;
-    gap: 15px;
-    margin-right: 15px;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 30px;
+    width: 100%;
+    align-items: center;
   }
   .nav a {
     color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     padding: 6px 12px;
-    border-radius: 4px;
     transition: all 0.2s ease;
   }
   .nav a:hover {
@@ -108,22 +138,21 @@ const commonStyles = `
     color: white;
   }
   .github-stars {
-    margin-left: 15px;
-    margin-right: 15px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
     color: white;
     text-decoration: none;
-    padding: 5px 12px;
+    padding: 8px 16px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
     font-size: 0.9em;
     transition: 0.2s ease;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  .github-stars:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(51, 51, 51, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1001;
   }
   .github-stars svg {
     fill: white;
