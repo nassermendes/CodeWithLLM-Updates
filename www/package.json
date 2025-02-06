@@ -1,0 +1,9 @@
+{
+  "name": "markdown-blog",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node compile.js"
+  },
+  "author": "Dan Voronov",
+  "license": "MIT"
+}
