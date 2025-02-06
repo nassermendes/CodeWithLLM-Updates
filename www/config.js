@@ -1,5 +1,5 @@
 // Базовые настройки сайта
-const BASE_URL = 'https://aicode.danvoronov.com/';
+const siteUrl = 'https://aicode.danvoronov.com/';
 
 // Конфигурация источников постов
 const posts_source = {
@@ -53,33 +53,10 @@ const postsConfig = {
     }
 };
 
-// Настройки локализации
-const localization = {
-    sidebarTitle: {
-        en: 'Archive',
-        uk: 'Архів'
-    },
-    archiveMore: {
-        en: 'View more in archive →',
-        uk: 'Переглянути більше в архіві →'
-    },
-    archiveTitle: {
-        en: 'Archive for',
-        uk: 'Архів за'
-    },
-    loading: 'Загрузка... 🔄',
-    errors: {
-        metaLoad: 'Не удалось загрузить мета-данные',
-        chunkLoad: 'Ошибка загрузки чанка',
-        allLoaded: 'Все посты загружены'
-    }
-};
-
 module.exports = {
     posts_source,
-    BASE_URL,
+    siteUrl,
     ALLOWED_EXTENSIONS,
     menuItems,
-    postsConfig,
-    localization
+    postsConfig
 }; 

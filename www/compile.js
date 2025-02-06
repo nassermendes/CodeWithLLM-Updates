@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const mdToHtml = require('./md2html');
 const { commonStyles } = require('./styles');
-const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig, localization } = require('./config');
+const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig } = require('./config');
 
 // Определяем publicDir глобально
 const publicDir = path.join(__dirname, 'public');
@@ -242,13 +242,14 @@ function groupPostsByYearAndMonth(posts) {
   return grouped;
 }
 
-function getMonthTitle(year, month, language) {
+function getMonthTitle(params, language) {
+  const { year, month } = params;
   const monthName = postsConfig.monthNames[language === 'uk' ? 'uk' : 'en'][month - 1];
   return `${monthName} ${year}`;
 }
 
 function createMonthArchivePage(posts, month, year, language, monthsData, currentMonth, allPosts) {
-  const title = `${getMonthTitle({year: parseInt(year), month: parseInt(month), language})} - Code With LLM`;
+  const title = `${getMonthTitle({year: parseInt(year), month: parseInt(month)}, language)} - Code With LLM`;
   return createPage(title, `
     <div class="container" style="grid-template-columns: 1fr">
       ${createArchiveNavigation(monthsData, currentMonth, language)}
@@ -259,7 +260,7 @@ function createMonthArchivePage(posts, month, year, language, monthsData, curren
       `).join('\n')}
       ${createArchiveNavigation(monthsData, currentMonth, language)}
     </div>
-  `, language === 'uk' ? 'ukr' : 'index', allPosts);
+  `, language === 'uk' ? 'ukr' : 'index', allPosts, currentMonth);
 }
 
 function createArchiveNavigation(monthsData, currentMonth, language) {
@@ -352,7 +353,7 @@ function getFullUrl(path, prefix = '') {
   return prefix + cleanPath;
 }
 
-function generateArchiveMenu(posts, language) {
+function generateArchiveMenu(posts, language, currentMonth = '') {
   const groupedByYear = groupPostsByYearAndMonth(posts);
   const years = Object.keys(groupedByYear).sort().reverse();
   const basePath = language === 'uk' ? '/ua/' : '/';
@@ -365,13 +366,17 @@ function generateArchiveMenu(posts, language) {
           <div class="menu-archive-months">
             ${Object.keys(groupedByYear[year])
               .sort().reverse()
-              .map(month => `
-                <a href="${basePath}${year}-${month}/" 
-                   class="menu-archive-month" 
-                   title="${getMonthName(month, language)}">
-                  ${month}
-                </a>
-              `).join('')}
+              .map(month => {
+                const monthKey = `${year}-${month}`;
+                const isActive = monthKey === currentMonth;
+                return `
+                  <a href="${basePath}${monthKey}/" 
+                     class="menu-archive-month${isActive ? ' active' : ''}" 
+                     title="${getMonthName(month, language)}">
+                    ${month}
+                  </a>
+                `;
+              }).join('')}
           </div>
         </div>
       `).join('\n')}
@@ -379,7 +384,7 @@ function generateArchiveMenu(posts, language) {
   `;
 }
 
-function generateMenu(activeMenu, posts = []) {
+function generateMenu(activeMenu, posts = [], currentMonth = '') {
   // Определяем базовые параметры
   const activeItem = menuItems.find(item => item.id === activeMenu) || menuItems[0];
   const language = activeItem.lang || 'en';
@@ -387,6 +392,11 @@ function generateMenu(activeMenu, posts = []) {
   // Формируем HTML меню
   return `
     <div class="nav">
+      <button class="burger-menu" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <div class="site-title">
         <a href="/">Code With LLM</a>
       </div>
@@ -402,7 +412,7 @@ function generateMenu(activeMenu, posts = []) {
 
           // Добавляем архив после активного пункта, если нужно
           if (isActive && item.showArchive && posts.length > 0) {
-            return itemHtml + generateArchiveMenu(posts, language);
+            return itemHtml + generateArchiveMenu(posts, language, currentMonth);
           }
           return itemHtml;
         }).join('\n')}
@@ -422,7 +432,7 @@ function generateMenu(activeMenu, posts = []) {
         </svg>
         <span id="github-star-count">-</span>
       </a>   
-    </div>       
+    </div>
     <script>
       fetch('https://api.github.com/repos/danvoronov/CodeWithLLM-Updates')
         .then(response => response.json())
@@ -430,61 +440,74 @@ function generateMenu(activeMenu, posts = []) {
           document.getElementById('github-star-count').textContent = data.stargazers_count;
         })
         .catch(console.error);
+
+      // Мобильное меню
+      document.addEventListener('DOMContentLoaded', function() {
+        const burger = document.querySelector('.burger-menu');
+        const nav = document.querySelector('.nav');
+        const body = document.body;
+        
+        burger.addEventListener('click', function() {
+          nav.classList.toggle('nav-open');
+          burger.classList.toggle('open');
+          body.classList.toggle('menu-open');
+        });
+      });
     </script>`;
 }
 
 // Функция для создания HTML страницы
-function createPage(title, content, activeMenu, posts = []) {
+function createPage(title, content, activeMenu, posts = [], currentMonth = '') {
   const description = activeMenu === 'index' ? 
     'Updates and tips about using Large Language Models (LLM) for programming and development' :
     activeMenu === 'ukr' ?
     'Поради та оновлення щодо використання великих мовних моделей (LLM) для програмування' :
     'CodeWithLLM - Learn how to better create code using AI and LLM';
 
-      return `
+  return `
   <!DOCTYPE html>
 <html lang="${activeMenu === 'ukr' ? 'uk' : 'en'}">
   <head>
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="${description}">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
-  <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${description}">
-  
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
-  <meta property="twitter:title" content="${title}">
-  <meta property="twitter:description" content="${description}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${description}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${siteUrl}">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="${siteUrl}">
+    <meta property="twitter:title" content="${title}">
+    <meta property="twitter:description" content="${description}">
 
     <title>${title}</title>
     <style>${commonStyles}</style>
   
-  <!-- Добавляем favicon -->
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+    <!-- Добавляем favicon -->
+    <link rel="icon" type="image/png" href="/img/favicon.png">
   </head>
   <body>
     <div class="wrapper">
-    ${generateMenu(activeMenu, posts)}
+    ${generateMenu(activeMenu, posts, currentMonth)}
       ${content}
     </div>
   </body>
   </html>`;
-    }
+}
 
 // Функция для создания простых страниц
-    function createSimpleContent(content) {
-      return `
+function createSimpleContent(content) {
+  return `
     <div class="container" style="grid-template-columns: 1fr">
       <div class="post">
         ${content}
       </div>
     </div>`;
-    }
+}
 
 async function compile() {
   try {
@@ -500,6 +523,22 @@ async function compile() {
     const imgDir = path.join(publicDir, 'img');
     if (!fs.existsSync(imgDir)) {
       fs.mkdirSync(imgDir);
+    }
+
+    // Копируем favicon
+    const faviconPngPath = path.join('.', 'favicon', 'favicon.png');
+    const faviconIcoPath = path.join('.', 'favicon', 'favicon.ico');
+    
+    if (fs.existsSync(faviconPngPath)) {
+      fs.copyFileSync(faviconPngPath, path.join(imgDir, 'favicon.png'));
+    } else {
+      console.warn('⚠️ favicon.png не найден в папке favicon');
+    }
+
+    if (fs.existsSync(faviconIcoPath)) {
+      fs.copyFileSync(faviconIcoPath, path.join(imgDir, 'favicon.ico')); 
+    } else {
+      console.warn('⚠️ favicon.ico не найден в папке favicon');
     }
 
     // Копируем изображения из всех языковых директорий
