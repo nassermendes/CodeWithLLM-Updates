@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const mdToHtml = require('./md2html');
 const { commonStyles } = require('./styles');
-const { posts_source, ALLOWED_EXTENSIONS, menuItems, postsConfig, localization } = require('./config');
+const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig, localization } = require('./config');
+
+// Определяем publicDir глобально
+const publicDir = path.join(__dirname, 'public');
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -220,9 +223,270 @@ function copyImages(sourcePath, targetPath) {
   });
 }
 
-async function compile() {
-  const publicDir = path.join(__dirname, 'public');
+function groupPostsByYearAndMonth(posts) {
+  const grouped = {};
+  posts.forEach(post => {
+    const date = new Date(post.date);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const monthKey = `${year}-${month}`;
+    
+    if (!grouped[year]) {
+      grouped[year] = {};
+    }
+    if (!grouped[year][month]) {
+      grouped[year][month] = [];
+    }
+    grouped[year][month].push(post);
+  });
+  return grouped;
+}
+
+function getMonthTitle(year, month, language) {
+  const monthName = postsConfig.monthNames[language === 'uk' ? 'uk' : 'en'][month - 1];
+  return `${monthName} ${year}`;
+}
+
+function createMonthArchivePage(posts, month, year, language, monthsData, currentMonth, allPosts) {
+  const title = `${getMonthTitle({year: parseInt(year), month: parseInt(month), language})} - Code With LLM`;
+  return createPage(title, `
+    <div class="container" style="grid-template-columns: 1fr">
+      ${createArchiveNavigation(monthsData, currentMonth, language)}
+      ${posts.map(post => `
+        <div class="post" data-title="${post.title}" data-date="${post.date}">
+          ${post.content}
+        </div>
+      `).join('\n')}
+      ${createArchiveNavigation(monthsData, currentMonth, language)}
+    </div>
+  `, language === 'uk' ? 'ukr' : 'index', allPosts);
+}
+
+function createArchiveNavigation(monthsData, currentMonth, language) {
+  // Получаем все месяцы в плоский список
+  const allMonths = [];
+  Object.entries(monthsData).forEach(([year, months]) => {
+    Object.keys(months).forEach(month => {
+      allMonths.push({
+        year: parseInt(year),
+        month: parseInt(month),
+        key: `${year}-${month}`
+      });
+    });
+  });
+
+  // Сортируем по дате (сначала новые)
+  allMonths.sort((a, b) => {
+    if (a.year !== b.year) return b.year - a.year;
+    return b.month - a.month;
+  });
+
+  // Находим текущий месяц
+  const [currentYear, currentMonthStr] = currentMonth.split('-');
+  const currentIndex = allMonths.findIndex(m => 
+    m.year === parseInt(currentYear) && 
+    m.month === parseInt(currentMonthStr)
+  );
+
+  if (currentIndex === -1) return '';
+
+  const prevMonth = currentIndex < allMonths.length - 1 ? allMonths[currentIndex + 1] : null;
+  const nextMonth = currentIndex > 0 ? allMonths[currentIndex - 1] : null;
+
+  const getMonthTitle = (item) => {
+    const monthName = postsConfig.monthNames[language === 'uk' ? 'uk' : 'en'][item.month - 1];
+    return `${monthName} ${item.year}`;
+  };
+
+  const basePath = language === 'uk' ? '/ua/' : '/';
+
+  return `
+    <div class="archive-nav">
+      <div class="nav-prev">
+        ${prevMonth ? 
+          `<a href="${basePath}${prevMonth.key}/" class="prev" title="${getMonthTitle(prevMonth)}">
+            ← ${language === 'uk' ? 'Попередній' : 'Previous'}
+          </a>` : 
+          ''
+        }
+      </div>
+      <div class="nav-current">
+        <h1>${getMonthTitle({year: parseInt(currentYear), month: parseInt(currentMonthStr)})}</h1>
+      </div>
+      <div class="nav-next">
+        ${nextMonth ? 
+          `<a href="${basePath}${nextMonth.key}/" class="next" title="${getMonthTitle(nextMonth)}">
+            ${language === 'uk' ? 'Наступний' : 'Next'} →
+          </a>` : 
+          ''
+        }
+      </div>
+    </div>
+  `;
+}
+
+function getMonthName(month, language) {
+  const monthIndex = parseInt(month) - 1;
+  return postsConfig.monthNames[language === 'uk' ? 'uk' : 'en'][monthIndex];
+}
+
+function createBlogContent(posts, language = 'en') {
+  const recentPosts = posts.slice(0, 12);
   
+  return `
+    <div class="container" style="grid-template-columns: 1fr">
+      <div class="posts">
+        ${recentPosts.map(post => `
+          <div class="post" data-title="${post.title}" data-date="${post.date}">
+            ${post.content}
+          </div>
+        `).join('\n')}
+      </div>
+    </div>
+  `;
+}
+
+function getFullUrl(path, prefix = '') {
+  // Убираем начальный слеш если он есть
+  const cleanPath = path.replace(/^\//, '');
+  return prefix + cleanPath;
+}
+
+function generateArchiveMenu(posts, language) {
+  const groupedByYear = groupPostsByYearAndMonth(posts);
+  const years = Object.keys(groupedByYear).sort().reverse();
+  const basePath = language === 'uk' ? '/ua/' : '/';
+
+  return `
+    <div class="menu-archive">
+      ${years.map(year => `
+        <div class="menu-archive-year">
+          <h4>${year}</h4>
+          <div class="menu-archive-months">
+            ${Object.keys(groupedByYear[year])
+              .sort().reverse()
+              .map(month => `
+                <a href="${basePath}${year}-${month}/" 
+                   class="menu-archive-month" 
+                   title="${getMonthName(month, language)}">
+                  ${month}
+                </a>
+              `).join('')}
+          </div>
+        </div>
+      `).join('\n')}
+    </div>
+  `;
+}
+
+function generateMenu(activeMenu, posts = []) {
+  // Определяем базовые параметры
+  const activeItem = menuItems.find(item => item.id === activeMenu) || menuItems[0];
+  const language = activeItem.lang || 'en';
+
+  // Формируем HTML меню
+  return `
+    <div class="nav">
+      <div class="site-title">
+        <a href="/">Code With LLM</a>
+      </div>
+      <div class="menu">
+        ${menuItems.map(item => {
+          const isActive = activeMenu === item.id;
+          const itemHtml = `
+            <a href="${item.path}" 
+               class="${isActive ? 'active' : ''}">
+              ${item.text}
+            </a>
+          `;
+
+          // Добавляем архив после активного пункта, если нужно
+          if (isActive && item.showArchive && posts.length > 0) {
+            return itemHtml + generateArchiveMenu(posts, language);
+          }
+          return itemHtml;
+        }).join('\n')}
+      </div>
+    </div>
+    <div>    
+      <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
+         class="github-stars" 
+         target="_blank">
+        <svg height="16" viewBox="0 0 16 16" width="16">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>CodeWithLLM-Updates</span>
+        <div class="divider"></div>
+        <svg aria-hidden="true" viewBox="0 0 16 16">
+          <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
+        </svg>
+        <span id="github-star-count">-</span>
+      </a>   
+    </div>       
+    <script>
+      fetch('https://api.github.com/repos/danvoronov/CodeWithLLM-Updates')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('github-star-count').textContent = data.stargazers_count;
+        })
+        .catch(console.error);
+    </script>`;
+}
+
+// Функция для создания HTML страницы
+function createPage(title, content, activeMenu, posts = []) {
+  const description = activeMenu === 'index' ? 
+    'Updates and tips about using Large Language Models (LLM) for programming and development' :
+    activeMenu === 'ukr' ?
+    'Поради та оновлення щодо використання великих мовних моделей (LLM) для програмування' :
+    'CodeWithLLM - Learn how to better create code using AI and LLM';
+
+      return `
+  <!DOCTYPE html>
+<html lang="${activeMenu === 'ukr' ? 'uk' : 'en'}">
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="${description}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
+  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${description}">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
+  <meta property="twitter:title" content="${title}">
+  <meta property="twitter:description" content="${description}">
+
+    <title>${title}</title>
+    <style>${commonStyles}</style>
+  
+  <!-- Добавляем favicon -->
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  </head>
+  <body>
+    <div class="wrapper">
+    ${generateMenu(activeMenu, posts)}
+      ${content}
+    </div>
+  </body>
+  </html>`;
+    }
+
+// Функция для создания простых страниц
+    function createSimpleContent(content) {
+      return `
+    <div class="container" style="grid-template-columns: 1fr">
+      <div class="post">
+        ${content}
+      </div>
+    </div>`;
+    }
+
+async function compile() {
   try {
     // Создаем папку public если её нет
     if (!fs.existsSync(publicDir)) {
@@ -249,283 +513,73 @@ async function compile() {
     const engPosts = processLanguagePosts(posts_source.eng);
     const ukrPosts = processLanguagePosts(posts_source.ukr);
 
+    // Создаем архивные страницы только для месяцев с постами
+    const engGrouped = groupPostsByYearAndMonth(engPosts);
+    Object.entries(engGrouped).forEach(([year, months]) => {
+      // Проверяем, что год существует в конфигурации
+      if (posts_source.eng.some(y => y.year === parseInt(year))) {
+        Object.entries(months).forEach(([month, posts]) => {
+          if (posts.length > 0) {
+            const monthKey = `${year}-${month}`;
+            const monthDir = path.join(publicDir, monthKey);
+            
+            if (!fs.existsSync(monthDir)) {
+              fs.mkdirSync(monthDir, { recursive: true });
+            }
+
+            fs.writeFileSync(
+              path.join(monthDir, 'index.html'),
+              createMonthArchivePage(
+                posts,
+                parseInt(month),
+                parseInt(year),
+                'en',
+                engGrouped,
+                monthKey,
+                engPosts
+              )
+            );
+          }
+        });
+      }
+    });
+
+    // Создаем архивные страницы для украинской версии
+    const ukrGrouped = groupPostsByYearAndMonth(ukrPosts);
+    Object.entries(ukrGrouped).forEach(([year, months]) => {
+      // Проверяем, что год существует в конфигурации
+      if (posts_source.ukr.some(y => y.year === parseInt(year))) {
+        Object.entries(months).forEach(([month, posts]) => {
+          if (posts.length > 0) {
+            const monthKey = `${year}-${month}`;
+            const monthDir = path.join(publicDir, 'ua', monthKey);
+            
+            if (!fs.existsSync(monthDir)) {
+              fs.mkdirSync(monthDir, { recursive: true });
+            }
+
+            fs.writeFileSync(
+              path.join(monthDir, 'index.html'),
+              createMonthArchivePage(
+                posts,
+                parseInt(month),
+                parseInt(year),
+                'uk',
+                ukrGrouped,
+                monthKey,
+                ukrPosts
+              )
+            );
+          }
+        });
+      }
+    });
+
     // Читаем Tools.md и README
     const tools = fs.existsSync('../Tools.md') 
       ? mdToHtml(fs.readFileSync('../Tools.md', 'utf8'))
       : '';
     const about = mdToHtml(fs.readFileSync('../README.md', 'utf8'));
-
-    // Функция для генерации меню
-    function generateMenu(activeMenu) {
-      const prefix = activeMenu === 'index' ? '' : '../';
-      return `
-    <div class="nav">
-      <div class="site-title">Code With LLM</div>
-      <div class="menu">
-        ${menuItems.map(item => 
-          `<a href="${prefix}${item.href}" ${activeMenu === item.id ? 'class="active"' : ''}>${item.text}</a>`
-        ).join('\n        ')}
-      </div>
-    </div>
-    <div>    
-      <a href="https://github.com/danvoronov/CodeWithLLM-Updates" class="github-stars" target="_blank">
-        <svg height="16" viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        <span>CodeWithLLM-Updates</span>
-        <div class="divider"></div>
-        <svg aria-hidden="true" viewBox="0 0 16 16">
-          <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
-        </svg>
-        <span id="github-star-count">-</span>
-      </a>   
-    </div>       
-    <script>
-      fetch('https://api.github.com/repos/danvoronov/CodeWithLLM-Updates')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('github-star-count').textContent = data.stargazers_count;
-        })
-        .catch(console.error);
-    </script>`;
-    }
-
-    // Функция для создания HTML страницы
-    function createPage(title, content, activeMenu) {
-      return `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>${title}</title>
-    <style>${commonStyles}</style>
-  </head>
-  <body>
-    <div class="wrapper">
-      ${generateMenu(activeMenu)}
-      ${content}
-    </div>
-  </body>
-  </html>`;
-    }
-
-    // Создаем контент для страниц с постами
-    function createBlogContent(posts, language = 'en') {
-      const initialPosts = savePostsToJson(posts, language);
-
-      return `
-    <div class="container">
-      <div class="sidebar">
-        <h3>${localization.sidebarTitle[language]}</h3>
-        <div id="recent-posts"></div>
-      </div>
-      <div id="posts"></div>
-      <div id="loading" style="display: none; text-align: center; padding: 20px;">
-        ${localization.loading}
-      </div>
-    </div>
-    <script>
-      let posts = ${JSON.stringify(initialPosts)};
-      let visiblePosts = ${postsConfig.visiblePostsInitial};
-      let activePostDate = null;
-      let currentChunk = 1;
-      let isLoading = false;
-      let meta = null;
-      let allPostsLoaded = false;
-
-      function showError(message) {
-        const loading = document.getElementById('loading');
-        loading.style.display = 'block';
-        loading.innerHTML = \`❌ \${message}\`;
-        setTimeout(() => {
-          loading.style.display = 'none';
-        }, 3000);
-      }
-
-      async function loadMeta() {
-        try {
-          const response = await fetch(\`data/${language}_meta.json\`);
-          if (!response.ok) throw new Error('${localization.errors.metaLoad}');
-          meta = await response.json();
-          console.log('Загружены мета-данные:', meta);
-        } catch (error) {
-          console.error('Ошибка загрузки мета-данных:', error);
-          showError('${localization.errors.metaLoad}');
-        }
-      }
-
-      async function loadMorePosts() {
-        if (isLoading || allPostsLoaded) return;
-        
-        try {
-          isLoading = true;
-          document.getElementById('loading').style.display = 'block';
-
-          if (visiblePosts < posts.length) {
-            visiblePosts += ${postsConfig.visiblePostsInitial};
-            renderPosts();
-            return;
-          }
-
-          if (meta && currentChunk < meta.chunks) {
-            const nextChunk = currentChunk + 1;
-            console.log('Загрузка чанка:', nextChunk);
-            
-            const response = await fetch(\`data/${language}_posts_\${nextChunk}.json\`);
-            if (!response.ok) throw new Error(\`${localization.errors.chunkLoad} \${nextChunk}\`);
-            
-            const newPosts = await response.json();
-            posts = [...posts, ...newPosts];
-            currentChunk = nextChunk;
-            visiblePosts += ${postsConfig.visiblePostsInitial};
-            
-            renderPosts();
-            console.log('Загружен чанк:', nextChunk, 'Всего постов:', posts.length);
-          } else {
-            allPostsLoaded = true;
-            showError('${localization.errors.allLoaded}');
-          }
-        } catch (error) {
-          console.error('Ошибка загрузки постов:', error);
-          showError(error.message);
-        } finally {
-          isLoading = false;
-          document.getElementById('loading').style.display = 'none';
-        }
-      }
-
-      function updateActivePost() {
-        const posts = document.querySelectorAll('.post');
-        const recentPosts = document.querySelectorAll('.recent-post');
-        let bestPost = null;
-        let bestVisibility = 0;
-        
-        posts.forEach(post => {
-          const rect = post.getBoundingClientRect();
-          const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-          const visibility = visibleHeight / post.offsetHeight;
-          
-          if (visibility > bestVisibility) {
-            bestVisibility = visibility;
-            bestPost = post;
-          }
-        });
-
-        if (bestPost) {
-          const date = bestPost.getAttribute('data-date');
-          if (activePostDate !== date) {
-            activePostDate = date;
-            recentPosts.forEach(recentPost => {
-              recentPost.classList.toggle('active', recentPost.getAttribute('data-date') === date);
-            });
-          }
-        }
-      }
-
-      function scrollToPost(date) {
-        const targetPost = document.querySelector(\`[data-date="\${date}"]\`);
-        if (targetPost) {
-          targetPost.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-
-      function renderRecentPosts() {
-        const recentPosts = posts.slice(0, ${postsConfig.recentPostsCount});
-        document.getElementById('recent-posts').innerHTML = recentPosts
-          .map(post => \`
-            <div class="recent-post" data-date="\${post.date}" onclick="scrollToPost('\${post.date}')">
-              <div class="recent-post-title">\${post.title}</div>
-            </div>
-          \`)
-          .join('');
-      }
-
-      function renderPosts() {
-        const postsContainer = document.getElementById('posts');
-        const visiblePostsData = posts.slice(0, Math.min(visiblePosts, posts.length));
-        
-        postsContainer.innerHTML = visiblePostsData
-          .map(post => \`
-            <div class="post" data-title="\${post.title.replace(/ /g, '&nbsp;&nbsp;&nbsp;')}" data-date="\${post.date}">
-              \${post.content}
-            </div>
-          \`)
-          .join('');
-        
-        updateActivePost();
-      }
-
-      // Оптимизированный обработчик прокрутки
-      let scrollTimeout;
-      window.onscroll = () => {
-        if (scrollTimeout) {
-          clearTimeout(scrollTimeout);
-        }
-        
-        scrollTimeout = setTimeout(() => {
-          const scrollPosition = window.innerHeight + window.scrollY;
-          const totalHeight = document.body.offsetHeight;
-          const threshold = totalHeight - 1000;
-
-          if (scrollPosition >= threshold && !isLoading) {
-            loadMorePosts();
-          }
-          updateActivePost();
-        }, 100);
-      };
-
-      // Инициализация с обработкой ошибок
-      async function init() {
-        try {
-          await loadMeta();
-          renderPosts();
-          renderRecentPosts();
-        } catch (error) {
-          console.error('Ошибка инициализации:', error);
-          showError('Ошибка инициализации');
-        }
-      }
-
-      init();
-    </script>
-    <style>
-      .recent-post {
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-      .recent-post:hover {
-        background-color: #f0f8ff;
-      }
-      .recent-post.active {
-        background-color: #f0f8ff;
-        border-left: 3px solid #007bff;
-        padding-left: 7px;
-      }
-      .recent-post:last-child {
-        border-bottom: none;
-      }
-      .recent-post-title {
-        font-weight: 500;
-        margin-bottom: 4px;
-      }
-      .recent-post-date {
-        font-size: 0.9em;
-        color: #666;
-      }
-    </style>`;
-    }
-
-    // Создаем контент для простых страниц
-    function createSimpleContent(content) {
-      return `
-    <div class="container" style="grid-template-columns: 1fr">
-      <div class="post">
-        ${content}
-      </div>
-    </div>`;
-    }
 
     // Создаем необходимые директории
     const dirs = ['ua', 'tools', 'about'].map(dir => path.join(publicDir, dir));
@@ -538,12 +592,12 @@ async function compile() {
     // Сохраняем все страницы
     fs.writeFileSync(
       path.join(publicDir, 'index.html'), 
-      createPage('Updates - CodeWithLLM', createBlogContent(engPosts, 'en'), 'index')
+      createPage('Updates - CodeWithLLM', createBlogContent(engPosts, 'en'), 'index', engPosts)
     );
     
     fs.writeFileSync(
       path.join(publicDir, 'ua/index.html'), 
-      createPage('Як краще створювати код за допомогою LLM', createBlogContent(ukrPosts, 'uk'), 'ukr')
+      createPage('Як краще створювати код за допомогою LLM', createBlogContent(ukrPosts, 'uk'), 'ukr', ukrPosts)
     );
     
     fs.writeFileSync(

@@ -1,3 +1,6 @@
+// Базовые настройки сайта
+const BASE_URL = 'https://aicode.danvoronov.com/';
+
 // Конфигурация источников постов
 const posts_source = {
     eng: [{year: 2024, path: 'eng_2024'}, {year: 2025, path: 'eng_2025'}],
@@ -13,24 +16,56 @@ const ALLOWED_EXTENSIONS = {
 
 // Конфигурация меню
 const menuItems = [
-    { href: '/', text: '🆕 Updates', id: 'index' },
-    { href: 'ua/', text: '🇺🇦 Українською', id: 'ukr' },
-    { href: 'tools/', text: '🛠️ Tools', id: 'tools' },
-    { href: 'about/', text: 'ℹ️ About', id: 'about' }
+    { 
+        id: 'index',
+        text: '🆕 Updates',
+        path: '/',
+        showArchive: true,
+        lang: 'en'
+    },
+    { 
+        id: 'ukr',
+        text: '🇺🇦 Українською',
+        path: '/ua/',
+        showArchive: true,
+        lang: 'uk'
+    },
+    { 
+        id: 'tools',
+        text: '🛠️ Tools',
+        path: '/tools/',
+        showArchive: false
+    },
+    { 
+        id: 'about',
+        text: 'ℹ️ About',
+        path: '/about/',
+        showArchive: false
+    }
 ];
 
 // Настройки постов
 const postsConfig = {
-    postsPerChunk: 30,
-    recentPostsCount: 9,
-    visiblePostsInitial: 10
+    recentPostsCount: 12,
+    monthNames: {
+        en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        uk: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
+    }
 };
 
 // Настройки локализации
 const localization = {
     sidebarTitle: {
-        en: 'Recent Posts',
-        uk: 'Останні дописи'
+        en: 'Archive',
+        uk: 'Архів'
+    },
+    archiveMore: {
+        en: 'View more in archive →',
+        uk: 'Переглянути більше в архіві →'
+    },
+    archiveTitle: {
+        en: 'Archive for',
+        uk: 'Архів за'
     },
     loading: 'Загрузка... 🔄',
     errors: {
@@ -42,6 +77,7 @@ const localization = {
 
 module.exports = {
     posts_source,
+    BASE_URL,
     ALLOWED_EXTENSIONS,
     menuItems,
     postsConfig,

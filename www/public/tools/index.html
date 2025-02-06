@@ -1,8 +1,23 @@
 
   <!DOCTYPE html>
-  <html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CodeWithLLM - Learn how to better create code using AI and LLM">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
+  <meta property="og:title" content="Tools - CodeWithLLM">
+  <meta property="og:description" content="CodeWithLLM - Learn how to better create code using AI and LLM">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://danvoronov.github.io/CodeWithLLM-Updates/">
+  <meta property="twitter:title" content="Tools - CodeWithLLM">
+  <meta property="twitter:description" content="CodeWithLLM - Learn how to better create code using AI and LLM">
+
     <title>Tools - CodeWithLLM</title>
     <style>
   body { 
@@ -112,7 +127,7 @@
     justify-content: flex-start;
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   }
-  .nav .site-title {
+  .nav .site-title a {
     font-weight: bold;
     font-size: 1.2em;
     margin: 10px 0;
@@ -204,22 +219,217 @@
       margin-bottom: 20px;
     }
   }
+  .archive-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .archive-link {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+
+  .archive-link:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .archive-header {
+    background: rgba(255, 255, 255, 0.98);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .archive-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #333;
+  }
+
+  .archive-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin: 20px 0;
+    gap: 20px;
+  }
+
+  .nav-prev {
+    text-align: right;
+  }
+
+  .nav-next {
+    text-align: left;
+  }
+
+  .nav-current {
+    font-weight: 500;
+    color: #333;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .archive-nav a {
+    color: #333;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .archive-nav a:hover {
+    background: #f0f8ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .archive-nav-bottom {
+    text-align: center;
+    margin: 40px 0;
+  }
+
+  .archive-nav-bottom .archive-link {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1.1em;
+  }
+
+  .archive-year {
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .archive-year h4 {
+    color: #333;
+    margin: 0 0 12px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
+  }
+
+  .archive-months {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .archive-month-link {
+    color: #333;
+    text-decoration: none;
+    padding: 3px 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .archive-month-link:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .menu-archive {
+    width: 60%;
+    padding: 0 15px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-archive-year {
+    margin: 15px 0;
+  }
+
+  .menu-archive-year h4 {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 8px 0;
+    font-size: 1em;
+    font-weight: 500;
+  }
+
+  .menu-archive-months {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-left: 1em;
+  }
+
+  .menu-archive-month {
+    color: rgba(255, 255, 255, 0.6) !important;
+    text-decoration: none;
+    padding: 2px 4px !important;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    font-size: 0.85em;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .menu-archive-month:hover {
+    color: white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-1px);
+  }
 </style>
+  
+  <!-- Добавляем favicon -->
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   </head>
   <body>
     <div class="wrapper">
-      
+    
     <div class="nav">
-      <div class="site-title">Code With LLM</div>
+      <div class="site-title">
+        <a href="/">Code With LLM</a>
+      </div>
       <div class="menu">
-        <a href="..//" >🆕 Updates</a>
-        <a href="../ua/" >🇺🇦 Українською</a>
-        <a href="../tools/" class="active">🛠️ Tools</a>
-        <a href="../about/" >ℹ️ About</a>
+        
+            <a href="/" 
+               class="">
+              🆕 Updates
+            </a>
+          
+
+            <a href="/ua/" 
+               class="">
+              🇺🇦 Українською
+            </a>
+          
+
+            <a href="/tools/" 
+               class="active">
+              🛠️ Tools
+            </a>
+          
+
+            <a href="/about/" 
+               class="">
+              ℹ️ About
+            </a>
+          
       </div>
     </div>
     <div>    
-      <a href="https://github.com/danvoronov/CodeWithLLM-Updates" class="github-stars" target="_blank">
+      <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
+         class="github-stars" 
+         target="_blank">
         <svg height="16" viewBox="0 0 16 16" width="16">
           <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
         </svg>
