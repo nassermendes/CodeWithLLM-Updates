@@ -16,6 +16,60 @@ const commonStyles = `
     overflow: hidden;
   }
 
+  /* Мобильное меню */
+  .burger-menu {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1002;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+    transition: opacity 0.3s ease;
+  }
+
+  .burger-menu.open svg {
+    transform: rotate(45deg);
+  }
+
+  .burger-menu.open svg path {
+    d: path('M3 12h18 M12 3v18');
+  }
+
+  .burger-menu svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .burger-menu svg path {
+    transition: d 0.3s ease;
+  }
+
+  .burger-menu:hover {
+    opacity: 0.7;
+  }
+
+  .menu-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1002;
+  }
+
+  @media (max-width: 768px) {
+    .burger-menu {
+      display: block;
+      background: rgba(51, 51, 51, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 4px;
+    }
+  }
+
   @keyframes gradientAnimation {
     0% {
       background-position: 0% 50%;
@@ -222,6 +276,9 @@ const commonStyles = `
 
     .burger-menu {
       display: block;
+      background: rgba(51, 51, 51, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 4px;
     }
 
     .nav {
@@ -262,6 +319,14 @@ const commonStyles = `
       font-size: 0.7em;
       padding: 10px 3px;
       height: 100px;
+    }
+
+    .nav .site-title {
+      margin-top: 50px;
+    }
+
+    .nav .site-title a {
+      font-size: 1.1em;
     }
   }
 
@@ -454,48 +519,6 @@ const commonStyles = `
     color: white !important;
     background: rgba(255, 255, 255, 0.1) !important;
     transform: translateY(-1px);
-  }
-
-  .burger-menu {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1002;
-    width: 30px;
-    height: 25px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .burger-menu span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background-color: white;
-    position: absolute;
-    left: 0;
-    transition: all 0.3s ease;
-  }
-
-  .burger-menu span:nth-child(1) { top: 0; }
-  .burger-menu span:nth-child(2) { top: 50%; transform: translateY(-50%); }
-  .burger-menu span:nth-child(3) { bottom: 0; }
-
-  .burger-menu.open span:nth-child(1) {
-    transform: rotate(45deg);
-    top: 11px;
-  }
-
-  .burger-menu.open span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .burger-menu.open span:nth-child(3) {
-    transform: rotate(-45deg);
-    bottom: 11px;
   }
 
   .copyright {

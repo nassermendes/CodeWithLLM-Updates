@@ -334,12 +334,14 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
 
 
   return `
-    <div class="nav">
+    <div class="menu-wrapper">
       <button class="burger-menu" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor" d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>  
+    </div>
+    <div class="nav">
       <div class="site-title">
         <a href="/">Code With LLM</a>
       </div>
