@@ -361,7 +361,7 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
           return itemHtml;
         }).join('\n')}
       </div>
-      <div class="copyright">© Dan Voronov</div>
+      <div class="copyright"><a href="https://danvoronov.com">© Dan Voronov</a></div>
     </div>
     <div>    
       <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 

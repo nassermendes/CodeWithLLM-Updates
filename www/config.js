@@ -21,7 +21,7 @@ const menuItems = [
     },
     { 
         id: 'ukr',
-        text: '🇺🇦 Українською',
+        text: '🇺🇦  Українською',
         path: '/ua/',
         showArchive: true,
         lang: 'uk'

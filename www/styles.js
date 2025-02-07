@@ -530,6 +530,16 @@ const commonStyles = `
     box-sizing: border-box;
     margin-top: auto;
   }
+
+  .copyright a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .copyright a:hover {
+    color: #888;
+  }
 `;
 
 module.exports = { commonStyles }; 
