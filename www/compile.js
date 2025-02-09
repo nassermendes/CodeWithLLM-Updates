@@ -174,11 +174,11 @@ function copyImages(sourcePath, targetPath) {
   });
 }
 
-function generatePostId(post) {
+function generatePostId(post, language) {
   const date = new Date(post.date);
-  const dateStr = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-  const titleSlug = post.title.date.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  return `post-${dateStr}-${titleSlug}`;
+  const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const timeStr = `${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}`;
+  return `post-${language === 'uk' ? 'ua-' : ''}${dateStr}_${timeStr}`;
 }
 
 function groupPostsByYearAndMonth(posts) {
@@ -212,7 +212,7 @@ function getPostSlug(post) {
 }
 
 function createCommentsSection(post, language) {
-  const postId = generatePostId(post);
+  const postId = generatePostId(post, language);
   return `
     <div class="comments-section">
       <hr class="comments-divider">
