@@ -30,17 +30,14 @@ marked.use({
       }
       return `<img src="/img/${url}"${text ? ` alt="${text}"` : ''}${title ? ` title="${title}"` : ''} />`;
     },
-    // link(href, title, text) {
-    //   if (text) {
-    //     return text.startsWith('<img') ? 
-    //     `<a href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>` :    
-    //    `<a href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
-    // }
   }
 });
 
-function markdownToHtml(markdown) {
-  return marked.parse(markdown.replace(/<!--[\s\S]*?-->/g, ''));
+function mdToHtml(content) {
+  // Заменяем теги на красивые спаны перед обработкой markdown
+  content = content.replace(/#([a-zA-Zа-яА-ЯёЁіІїЇєЄ]+)/g, '<span class="post-tag">#$1</span>');
+  
+  return marked.parse(content.replace(/<!--[\s\S]*?-->/g, ''));
 }
 
-module.exports = markdownToHtml;
+module.exports = mdToHtml;

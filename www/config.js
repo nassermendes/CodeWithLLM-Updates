@@ -21,7 +21,7 @@ const menuItems = [
     },
     { 
         id: 'ukr',
-        text: '🇺🇦  Українською',
+        text: 'Українською',
         path: '/ua/',
         showArchive: true,
         lang: 'uk'
@@ -41,7 +41,7 @@ const menuItems = [
 ];
 
 const postsConfig = {
-    recentPostsCount: 12,
+    recentPostsCount: 16,
     monthNames: {
         en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         uk: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']

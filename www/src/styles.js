@@ -114,11 +114,11 @@ const commonStyles = `
       0% { border-opacity: 0.3; }
       100% { border-opacity: 0.5; }
     }
-    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+    background: linear-gradient(to bottom right, hsla(58, 83%, 65%, 0.1), hsla(58, 83%, 65%, 0.1));
   }
   .post {
     background: rgba(255, 255, 255, 0.98);
-    padding: 20px 40px 20px 60px;
+    padding: 20px 40px 60px 70px;
     border-radius: 0 0.75rem 0.75rem 0.75rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -126,8 +126,24 @@ const commonStyles = `
     max-width: 100%;
     backdrop-filter: blur(10px);
     position: relative;
+    min-height: 100px;
+    font-size: 1.3rem;
   }
   .post::before {
+    content: attr(data-time);
+    position: absolute;
+    left: 0;
+    top: 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    background: #333;    
+    color: #9a9a9a;
+    margin: 0; 
+    padding: 15px 5px;
+    font-size: 0.6em;
+    z-index: 333;
+  }
+  .post::after {
     content: attr(data-title);
     position: absolute;
     left: 0;
@@ -138,10 +154,11 @@ const commonStyles = `
     color: white;
     margin: 0;
     padding: 15px 5px;
-    height: 120px;
-    font-size: 0.8em;
+    height: 110px;
+    font-size: 0.6em;
     justify-content: center;
   }
+
   .post img {
     max-width: 100%;
     height: auto;
@@ -185,7 +202,7 @@ const commonStyles = `
     font-weight: bold;
     font-size: 1.2em;
     margin: 10px 0;
-    color: #ff8c42;
+    color: #EEE65F;
     white-space: nowrap;
     padding: 0 10px;
   }
@@ -204,7 +221,7 @@ const commonStyles = `
     padding: 6px 12px;
     transition: all 0.2s ease;
   }
-  .nav a:hover {
+  .nav a:not(.site-title a):hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
   }
@@ -230,6 +247,7 @@ const commonStyles = `
     z-index: 1001;
   }
   .github-stars:hover {
+    color: #EEE65F;
     border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .github-stars svg {
@@ -539,6 +557,107 @@ const commonStyles = `
 
   .copyright a:hover {
     color: #888;
+  }
+
+  .comments-divider {
+    margin: 2rem 0 1rem;
+    border: 0;
+    border-top: 2px solid rgba(5, 92, 55, 0.13);
+    width: 100%;
+  }
+  .comments-title {
+    margin: 1rem 0;
+    font-size: 1.5rem;
+    font-weight: normal;
+  }
+  .comments-section {
+    margin-top: 2rem;
+  }
+  .comments-link {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    z-index: 2;
+  }
+  .comments-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 43px;
+    font-size: 0.9em;
+    color: white;
+    text-decoration: none;
+    background: rgba(51, 51, 51, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 8px 0 8px 0;
+    transition: all 0.2s ease;
+  }
+  .comments-link a::before {
+    content: "💬";
+    font-size: 1.1em;
+  }
+  .comments-link a:hover {
+    background: rgba(51, 51, 51, 0.8);
+    color: #EEE65F;
+  }
+
+  .top-tags {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 1001;
+    padding: 8px 16px;
+    background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(210, 127, 21);
+  }
+
+  .top-tags a {
+    color: black;
+    text-decoration: none;
+    font-size: 0.9em;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .top-tags a::after {
+    content: attr(data-count);
+    color: #6f6f6f;
+    margin-left: 2px;
+  }
+
+
+
+  .top-tags a:hover {
+    color: #83E3BA;
+    opacity: 1;
+  }
+
+  .post-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(51, 51, 51, 0.05);
+    color: #333;
+    font-size: 0.9em;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .post-tag:hover {
+    background: rgba(51, 51, 51, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .post-tag::before {
+    content: "🏷️";
+    font-size: 1em;
   }
 `;
 
