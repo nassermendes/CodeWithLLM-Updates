@@ -366,11 +366,11 @@ function createBlogContent(posts, language) {
   
   return `
     <div class="site-description-wrapper">
-      <div class="site-description">
-        ${language === 'uk' ? 
-          'Тут ви знайдете корисні поради, приклади, інструкції та інші матеріали, які допоможуть вам у створенні коду з допомогою штучного інтелекту' : 
-          "Here you'll find useful tips, examples, instructions, and other materials to help you create code with the help of AI"}
-      </div>
+<div class="site-description">
+  ${language === 'uk' ?
+    'Великі мовні моделі (LLM) допомагають вам у створенні коду. Тут ви знайдете корисні поради, приклади та інструкції, щоб використовувати їх ефективно.' :
+    "Large Language Models (LLM) assist you in creating code. Here you'll find useful tips, examples, and instructions to use them effectively."}
+</div>
     </div>
     <div class="top-tags">
       <a href="javascript:void(0)" class="up-button" title="${language === 'uk' ? 'Нагору' : 'Scroll to top'}">${language === 'uk' ? 'Початок' : 'Home'}</a>

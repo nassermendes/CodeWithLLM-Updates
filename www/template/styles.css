@@ -1,4 +1,4 @@
-  body { 
+body { 
     font-family: BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     padding: 0;
@@ -189,6 +189,43 @@
     white-space: pre-wrap;
     word-wrap: break-word;
   }
+
+  /* Table styles */
+  .post table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .post th {
+    text-align: left;
+    padding: 12px;
+    background-color: rgba(51, 51, 51, 0.03);
+    border-bottom: 2px solid #cccccc;
+    border-right: 1px solid #e6e6e6;
+  }
+
+  .post td {
+    padding: 12px;
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #e6e6e6;
+  }
+
+  .post th:last-child,
+  .post td:last-child {
+    border-right: none;
+  }
+
+  .post tr:last-child td {
+    border-bottom: none;
+  }
+
+  .post table code {
+    background: rgba(51, 51, 51, 0.05);
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
   .sidebar {
     position: sticky;
     top: 20px;
