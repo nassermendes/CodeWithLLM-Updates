@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const mdToHtml = require('./src/md2html');
-const { commonStyles } = require('./src/styles');
 const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig } = require('./config');
 
 const publicDir = path.join(__dirname, 'public');
@@ -366,8 +365,16 @@ function createBlogContent(posts, language) {
   const topTags = extractTags(recentPosts);
   
   return `
+    <div class="site-description-wrapper">
+      <div class="site-description">
+        ${language === 'uk' ? 
+          'Тут ви знайдете корисні поради, приклади, інструкції та інші матеріали, які допоможуть вам у створенні коду з допомогою штучного інтелекту' : 
+          "Here you'll find useful tips, examples, instructions, and other materials to help you create code with the help of AI"}
+      </div>
+    </div>
     <div class="top-tags">
-      ${topTags.map(([tag, count]) => `<a href="javascript:void(0)" data-tag="${tag}" data-count=" • ${count}">${tag}</a>`).join(' ')}
+      <a href="javascript:void(0)" class="up-button" title="${language === 'uk' ? 'Нагору' : 'Scroll to top'}">${language === 'uk' ? 'Початок' : 'Home'}</a>
+      ${topTags.map(([tag, count]) => `<a href="javascript:void(0)" data-tag="${tag}" data-count="${count} • ">${tag}</a>`).join(' ')}
     </div>
     <div class="container" style="grid-template-columns: 1fr">
       <div class="posts">
@@ -389,9 +396,18 @@ function createBlogContent(posts, language) {
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        const tagLinks = document.querySelectorAll('.top-tags a');
+        const tagLinks = document.querySelectorAll('.top-tags a:not(.up-button)');
+        const upButton = document.querySelector('.up-button');
         const posts = document.querySelectorAll('.post');
         const tagPositions = new Map();
+
+        upButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
 
         tagLinks.forEach(link => {
           link.addEventListener('click', function(e) {
@@ -540,7 +556,6 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
 }
 
 function createPage(title, content, activeMenu, posts = [], currentMonth = '', preGeneratedMenu = '') {
-  // Если title это объект с date и time, используем date
   const pageTitle = typeof title === 'object' && title.date ? 
     `${title.date} ${title.time} - CodeWithLLM` : 
     title.includes(' - CodeWithLLM') ? title : `${title} - CodeWithLLM`;
@@ -572,12 +587,16 @@ function createPage(title, content, activeMenu, posts = [], currentMonth = '', p
     <meta property="twitter:description" content="${description}">
 
     <title>${pageTitle}</title>
-    <style>
-      ${commonStyles}
-    </style>
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="/css/styles.css">
   
     <!-- Добавляем favicon -->
     <link rel="icon" type="image/png" href="/img/favicon.png">
+    
+    <!-- Подключаем lite-yt-embed -->
+    <link rel="stylesheet" href="/css/lite-yt-embed.css" />
+    <script src="/js/lite-yt-embed.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -614,8 +633,8 @@ async function compile() {
     }
 
     // Копируем favicon
-    const faviconPngPath = path.join('.', 'favicon', 'favicon.png');
-    const faviconIcoPath = path.join('.', 'favicon', 'favicon.ico');
+    const faviconPngPath = path.join('.', 'template', 'favicon.png');
+    const faviconIcoPath = path.join('.', 'template', 'favicon.ico');
     
     if (fs.existsSync(faviconPngPath)) {
       fs.copyFileSync(faviconPngPath, path.join(imgDir, 'favicon.png'));
@@ -624,9 +643,37 @@ async function compile() {
     }
 
     if (fs.existsSync(faviconIcoPath)) {
-      fs.copyFileSync(faviconIcoPath, path.join(imgDir, 'favicon.ico')); 
+      fs.copyFileSync(faviconIcoPath, path.join(publicDir, 'favicon.ico')); 
     } else {
       console.warn('⚠️ favicon.ico не найден в папке favicon');
+    }
+
+    // Копируем файлы для lite-yt-embed и стили
+    const cssDir = path.join(publicDir, 'css');
+    const jsDir = path.join(publicDir, 'js');
+    if (!fs.existsSync(cssDir)) fs.mkdirSync(cssDir);
+    if (!fs.existsSync(jsDir)) fs.mkdirSync(jsDir);
+
+    const liteYtCssPath = path.join('.', 'template', 'lite-yt-embed.css');
+    const liteYtJsPath = path.join('.', 'template', 'lite-yt-embed.js');
+    const stylesCssPath = path.join('.', 'template', 'styles.css');
+    
+    if (fs.existsSync(liteYtCssPath)) {
+      fs.copyFileSync(liteYtCssPath, path.join(cssDir, 'lite-yt-embed.css'));
+    } else {
+      console.warn('⚠️ lite-yt-embed.css не найден в папке template');
+    }
+
+    if (fs.existsSync(liteYtJsPath)) {
+      fs.copyFileSync(liteYtJsPath, path.join(jsDir, 'lite-yt-embed.js'));
+    } else {
+      console.warn('⚠️ lite-yt-embed.js не найден в папке template');
+    }
+
+    if (fs.existsSync(stylesCssPath)) {
+      fs.copyFileSync(stylesCssPath, path.join(cssDir, 'styles.css'));
+    } else {
+      console.warn('⚠️ styles.css не найден в папке template');
     }
 
     // Копируем изображения

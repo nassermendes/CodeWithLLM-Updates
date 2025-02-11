@@ -11,15 +11,7 @@ marked.use({
                        url.match(/(?:v=|\/v\/|^\/|embed\/)([^&\?\/]+)/i)?.[1];
         if (videoId) {
           return `
-            <div class="youtube-wrapper">
-              <iframe 
-                width="100%" 
-                height="400" 
-                src="https://www.youtube-nocookie.com/embed/${videoId}" 
-                frameborder="0" 
-                allowfullscreen>
-              </iframe>
-            </div>
+            <lite-youtube videoid="${videoId}" playlabel="Play Video"></lite-youtube>
           `;
         }
       }
