@@ -653,67 +653,90 @@ body {
     color: #EEE65F;
   }
 
-  .top-tags {
+  .scroll-tags {
+    border-radius: 8px 0 0 0;
     position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 20px;
+    right: 20px;
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
     z-index: 1001;
-    padding: 8px 16px;
+    padding: 12px;
     background: linear-gradient(to bottom right, hsla(0, 0%, 100%, 0.1), hsla(0, 0%, 100%, 0.1));
     backdrop-filter: blur(10px);
     border: 1px solid rgb(210, 127, 21);
+    max-height: 80vh;
+    overflow-y: auto;
+    max-width: 150px;
   }
 
-  .top-tags a {
-    color: black;
-    text-decoration: none;
-    font-size: 0.9em;
-    opacity: 0.9;
-    transition: opacity 0.2s ease;
+  /* Добавляем отступ для контента, чтобы не наезжал на теги */
+  @media (min-width: 769px) {
+    .container {
+      padding-right: calc(150px + 40px) !important;
+    }
+    
+    .site-description-wrapper {
+      padding-right: calc(150px + 25px);
+      margin-right: 0;
+      margin-left: 1.2rem;
+    }
   }
 
-  .top-tags .up-button {
-    padding: 2px 8px;
-    background: rgba(51, 51, 51, 0.1);
-    font-size: 0.85em;
-    margin-right: 8px;
-  }
-
-  .top-tags .up-button:hover {
-    background: rgba(51, 51, 51, 0.2);
-    color: #333;
-  }
-
-  .top-tags a::before {
-    content: attr(data-count);
-    color: #6f6f6f;
-    margin-left: 2px;
-  }
-
-  .top-tags a:hover {
-    color: #83E3BA;
-    opacity: 1;
-  }
-
-  @media (max-width: 1150px) {
-    .top-tags a::before {
+  @media (max-width: 768px) {
+    .scroll-tags {
       display: none;
     }
     
-    .top-tags {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      max-width: 80vw;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+    .container {
+      padding-right: 1rem !important;
     }
+    
+    .site-description-wrapper {
+      margin-right: 1.2rem;
+      margin-left: 1.2rem;
+      padding-right: 0;
+    }
+  }
 
-    .top-tags::-webkit-scrollbar {
-      display: none;
-    }
+  .scroll-tags a {
+    color: black;
+    text-decoration: none;
+    font-size: 0.85em;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  .scroll-tags .up-button {
+    font-size: 0.7em;
+    padding-top: 6px;
+    text-align: center;
+    border-bottom: 1px solid rgba(111, 111, 111, 0.3);
+  }
+
+  .scroll-tags .up-button:hover {
+    background: rgba(51, 51, 51, 0.2);
+    color: #83E3BA;
+  }
+
+  .scroll-tags a::after {
+    content: attr(data-count);
+    color: #6f6f6f;
+    margin-left: 2px;
+    font-size: 0.7em;    
+  }
+
+  .hashtagcolor {
+    color: #6f6f6f;
+  }
+
+  .scroll-tags a:hover {
+    color: #83E3BA;
+    opacity: 1;
+    background: rgba(51, 51, 51, 0.05);
   }
 
   .post-tag {
@@ -742,6 +765,8 @@ body {
   .site-description-wrapper {
     margin: 1rem 1.2rem;
     border-left: 29px solid #333;
+    max-width: 1200px;
+    box-sizing: border-box;
   }
 
   .site-description {

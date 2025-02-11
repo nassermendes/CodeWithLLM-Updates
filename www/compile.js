@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const mdToHtml = require('./src/md2html');
-const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig } = require('./config');
+const { posts_source, siteUrl, ALLOWED_EXTENSIONS, menuItems, postsConfig, siteConfig, commentsConfig, githubConfig } = require('./config');
 
 const publicDir = path.join(__dirname, 'public');
 
@@ -217,18 +217,18 @@ function createCommentsSection(post, language) {
       <hr class="comments-divider">
       <div id="comments">
         <script src="https://giscus.app/client.js" 
-          data-repo="danvoronov/CodeWithLLM-Updates" 
-          data-repo-id="R_kgDONzVr9g" 
-          data-category="Announcements" 
-          data-category-id="DIC_kwDONzVr9s4CmkPS" 
-          data-mapping="specific" 
+          data-repo="${commentsConfig.repo}" 
+          data-repo-id="${commentsConfig.repoId}" 
+          data-category="${commentsConfig.category}" 
+          data-category-id="${commentsConfig.categoryId}" 
+          data-mapping="${commentsConfig.mapping}" 
           data-term="${postId}"
-          data-strict="0" 
-          data-reactions-enabled="1" 
-          data-emit-metadata="0" 
-          data-input-position="bottom" 
-          data-theme="noborder_light" 
-          data-lang="en" 
+          data-strict="${commentsConfig.strict}" 
+          data-reactions-enabled="${commentsConfig.reactionsEnabled}" 
+          data-emit-metadata="${commentsConfig.emitMetadata}" 
+          data-input-position="${commentsConfig.inputPosition}" 
+          data-theme="${commentsConfig.theme}" 
+          data-lang="${commentsConfig.lang}" 
           crossorigin="anonymous" 
           async></script>
       </div>
@@ -236,7 +236,7 @@ function createCommentsSection(post, language) {
 }
 
 function createCommentsLink(post, language, path) {
-  return `<p class="comments-link"><a href="${path}/#comments">${language === 'uk' ? 'Коментарі' : 'Comments'}</a></p>`;
+  return `<p class="comments-link"><a href="${path}/#comments">${siteConfig.ui[language === 'uk' ? 'uk' : 'en'].comments}</a></p>`;
 }
 
 let createPageWithMenu;
@@ -255,6 +255,9 @@ function createPostPage(post, language) {
 
 function createMonthArchivePage(posts, month, year, language, monthsData, currentMonth, allPosts) {
   const title = `${getMonthTitle({year: parseInt(year), month: parseInt(month)}, language)}`;
+  const monthTags = extractTags(posts); // Получаем теги только из постов текущего месяца
+  const lang = language === 'uk' ? 'uk' : 'en';
+
   return createPage(title, `
     <div class="container" style="grid-template-columns: 1fr">
       ${createArchiveNavigation(monthsData, currentMonth, language)}
@@ -271,6 +274,98 @@ function createMonthArchivePage(posts, month, year, language, monthsData, curren
       }).join('\n')}
       ${createArchiveNavigation(monthsData, currentMonth, language)}
     </div>
+    <div class="scroll-tags">
+      <a href="javascript:void(0)" class="up-button" title="${siteConfig.ui[lang].scrollToTop}">${siteConfig.ui[lang].home}</a>
+      ${monthTags.map(([tag, count]) => `<a href="javascript:void(0)" data-tag="${tag}" data-count=" • ${count}">${tag.startsWith('#') ? `<span class="hashtagcolor">#</span>${tag.slice(1)}` : tag}</a>`).join('\n')}
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const posts = document.querySelectorAll('.post');
+        const tagLinks = document.querySelectorAll('.scroll-tags a:not(.up-button)');
+        const upButton = document.querySelector('.up-button');
+        const tagPositions = new Map();
+        let activePost = null;
+
+        const updateTagHighlight = () => {
+          tagLinks.forEach(link => {
+            link.style.background = '';
+            link.style.color = '';
+          });
+          if (activePost) {
+            const content = activePost.innerHTML;
+            tagLinks.forEach(link => {
+              if (content.includes(link.dataset.tag)) {
+                link.style.background = 'rgba(131, 227, 186, 0.2)';
+                link.style.color = '#333';
+              }
+            });
+          }
+        };
+
+        const observer = new IntersectionObserver(entries => {
+          let bestPost = null, maxRatio = 0;
+          entries.forEach(({ target, intersectionRatio }) => {
+            if (intersectionRatio > maxRatio) {
+              maxRatio = intersectionRatio;
+              bestPost = target;
+            }
+          });
+          // Если видимость поста >= 50% – считаем его активным
+          if (maxRatio >= 0.5) {
+            activePost = bestPost;
+            updateTagHighlight();
+          }
+        }, {
+          threshold: Array.from({ length: 101 }, (_, i) => i / 100)
+        });
+
+        posts.forEach(post => observer.observe(post));
+
+        upButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        tagLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tag = this.dataset.tag;
+            const positions = findTagPositions(tag);
+            
+            if (positions.length === 0) return;
+            
+            let currentPos = tagPositions.has(tag) ? tagPositions.get(tag) : -1;
+            currentPos = (currentPos + 1) % positions.length;
+            tagPositions.set(tag, currentPos);
+            
+            const post = positions[currentPos];
+            scrollToPost(post);
+          });
+        });
+
+        function findTagPositions(tag) {
+          const positions = [];
+          posts.forEach(post => {
+            if (post.innerHTML.includes(tag)) {
+              positions.push(post);
+            }
+          });
+          return positions;
+        }
+
+        function scrollToPost(post) {
+          const rect = post.getBoundingClientRect();
+          const absoluteTop = window.pageYOffset + rect.top - 100;
+          window.scrollTo({
+            top: absoluteTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    </script>
   `, language === 'uk' ? 'ukr' : 'index', allPosts, currentMonth);
 }
 
@@ -310,13 +405,14 @@ function createArchiveNavigation(monthsData, currentMonth, language) {
   };
 
   const basePath = language === 'uk' ? '/ua/' : '/';
+  const lang = language === 'uk' ? 'uk' : 'en';
 
   return `
     <div class="archive-nav">
       <div class="nav-prev">
         ${prevMonth ? 
           `<a href="${basePath}${prevMonth.key}/" class="prev" title="${getMonthTitle(prevMonth)}">
-            ← ${language === 'uk' ? 'Попередній' : 'Previous'}
+            ← ${siteConfig.ui[lang].previous}
           </a>` : 
           ''
         }
@@ -327,7 +423,7 @@ function createArchiveNavigation(monthsData, currentMonth, language) {
       <div class="nav-next">
         ${nextMonth ? 
           `<a href="${basePath}${nextMonth.key}/" class="next" title="${getMonthTitle(nextMonth)}">
-            ${language === 'uk' ? 'Наступний' : 'Next'} →
+            ${siteConfig.ui[lang].next} →
           </a>` : 
           ''
         }
@@ -363,18 +459,13 @@ function extractTags(posts) {
 function createBlogContent(posts, language) {
   const recentPosts = posts.slice(0, postsConfig.recentPostsCount);
   const topTags = extractTags(recentPosts);
+  const lang = language === 'uk' ? 'uk' : 'en';
   
   return `
     <div class="site-description-wrapper">
-<div class="site-description">
-  ${language === 'uk' ?
-    'Великі мовні моделі (LLM) допомагають вам у створенні коду. Тут ви знайдете корисні поради, приклади та інструкції, щоб використовувати їх ефективно.' :
-    "Large Language Models (LLM) assist you in creating code. Here you'll find useful tips, examples, and instructions to use them effectively."}
-</div>
-    </div>
-    <div class="top-tags">
-      <a href="javascript:void(0)" class="up-button" title="${language === 'uk' ? 'Нагору' : 'Scroll to top'}">${language === 'uk' ? 'Початок' : 'Home'}</a>
-      ${topTags.map(([tag, count]) => `<a href="javascript:void(0)" data-tag="${tag}" data-count="${count} • ">${tag}</a>`).join(' ')}
+      <div class="site-description">
+        ${siteConfig.siteDescriptions[lang]}
+      </div>
     </div>
     <div class="container" style="grid-template-columns: 1fr">
       <div class="posts">
@@ -388,18 +479,58 @@ function createBlogContent(posts, language) {
             <div class="post" data-title="${post.title.date}" data-time="${post.title.time}" data-date="${post.date}">
               ${post.content}
                 ${createCommentsLink(post, language, path)}
-              </div>
             </div>
+          </div>
           `;
         }).join('\n')}
       </div>
     </div>
+    <div class="scroll-tags">
+     <a href="javascript:void(0)" class="up-button" title="${siteConfig.ui[lang].scrollToTop}">${siteConfig.ui[lang].home}</a>
+      ${topTags.map(([tag, count]) => `<a href="javascript:void(0)" data-tag="${tag}" data-count=" • ${count}">${tag.startsWith('#') ? `<span class="hashtagcolor">#</span>${tag.slice(1)}` : tag}</a>`).join('\n')}
+    </div>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const tagLinks = document.querySelectorAll('.top-tags a:not(.up-button)');
-        const upButton = document.querySelector('.up-button');
+      document.addEventListener('DOMContentLoaded', () => {
         const posts = document.querySelectorAll('.post');
+        const tagLinks = document.querySelectorAll('.scroll-tags a:not(.up-button)');
+        const upButton = document.querySelector('.up-button');
         const tagPositions = new Map();
+        let activePost = null;
+
+        const updateTagHighlight = () => {
+          tagLinks.forEach(link => {
+            link.style.background = '';
+            link.style.color = '';
+          });
+          if (activePost) {
+            const content = activePost.innerHTML;
+            tagLinks.forEach(link => {
+              if (content.includes(link.dataset.tag)) {
+                link.style.background = 'rgba(131, 227, 186, 0.2)';
+                link.style.color = '#333';
+              }
+            });
+          }
+        };
+
+        const observer = new IntersectionObserver(entries => {
+          let bestPost = null, maxRatio = 0;
+          entries.forEach(({ target, intersectionRatio }) => {
+            if (intersectionRatio > maxRatio) {
+              maxRatio = intersectionRatio;
+              bestPost = target;
+            }
+          });
+          // Если видимость поста >= 50% – считаем его активным
+          if (maxRatio >= 0.5) {
+            activePost = bestPost;
+            updateTagHighlight();
+          }
+        }, {
+          threshold: Array.from({ length: 101 }, (_, i) => i / 100)
+        });
+
+        posts.forEach(post => observer.observe(post));
 
         upButton.addEventListener('click', function(e) {
           e.preventDefault();
@@ -518,7 +649,7 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
       <div class="copyright"><a href="https://danvoronov.com">© Dan Voronov</a></div>
     </div>
     <div>    
-      <a href="https://github.com/danvoronov/CodeWithLLM-Updates" 
+      <a href="${githubConfig.repoUrl}" 
          class="github-stars" 
          target="_blank">
         <svg height="16" viewBox="0 0 16 16" width="16">
@@ -533,7 +664,7 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
       </a>   
     </div>
     <script>
-      fetch('https://api.github.com/repos/danvoronov/CodeWithLLM-Updates')
+      fetch('${githubConfig.apiUrl}')
         .then(response => response.json())
         .then(data => {
           document.getElementById('github-star-count').textContent = data.stargazers_count;
@@ -557,14 +688,14 @@ function generateMenu(activeMenu, posts = [], currentMonth = '') {
 
 function createPage(title, content, activeMenu, posts = [], currentMonth = '', preGeneratedMenu = '') {
   const pageTitle = typeof title === 'object' && title.date ? 
-    `${title.date} ${title.time} - CodeWithLLM` : 
-    title.includes(' - CodeWithLLM') ? title : `${title} - CodeWithLLM`;
+    `${title.date} ${title.time} - ${siteConfig.title}` : 
+    title.includes(` - ${siteConfig.title}`) ? title : `${title} - ${siteConfig.title}`;
   
   const description = activeMenu === 'index' ? 
-    'Updates and tips about using Large Language Models (LLM) for programming and development' :
+    siteConfig.descriptions.index :
     activeMenu === 'ukr' ?
-    'Поради та оновлення щодо використання великих мовних моделей (LLM) для програмування' :
-    'CodeWithLLM - Learn how to better create code using AI and LLM';
+    siteConfig.descriptions.ukr :
+    siteConfig.descriptions.default;
 
   return `
   <!DOCTYPE html>
