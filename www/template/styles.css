@@ -97,7 +97,7 @@ body {
   }
   .wrapper {
     position: relative;
-    max-width: 1200px;
+    max-width: 1380px;
     margin: 0 auto;
     padding: 60px 20px 20px;
     box-sizing: border-box;
@@ -657,7 +657,7 @@ body {
     border-radius: 8px 0 0 0;
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 15px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -765,7 +765,6 @@ body {
   .site-description-wrapper {
     margin: 1rem 1.2rem;
     border-left: 29px solid #333;
-    max-width: 1200px;
     box-sizing: border-box;
   }
 
