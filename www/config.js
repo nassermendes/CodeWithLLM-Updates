@@ -56,8 +56,8 @@ const siteConfig = {
         default: 'CodeWithLLM - Learn how to better create code using AI and LLM'
     },
     siteDescriptions: {
-        en: 'Large Language Models (LLM) assist you in creating code. Here you\'ll find useful tips, examples, and instructions to use them effectively.',
-        uk: 'Великі мовні моделі (LLM) допомагають вам у створенні коду. Тут ви знайдете корисні поради, приклади та інструкції, щоб використовувати їх ефективно.'
+        en: '🤖 AI tools for smarter coding: practical examples, step-by-step instructions, and real-world LLM applications. Learn to work efficiently with modern code assistants.',
+        uk: '🤖 Інструменти ШІ для програмування: практичні приклади, покрокові інструкції та реальні застосування LLM. Навчіться ефективно працювати з сучасними асистентами програмування.'
     },
     ui: {
         en: {

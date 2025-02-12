@@ -42,27 +42,6 @@ function isAllowedFile(filename) {
   return Object.values(ALLOWED_EXTENSIONS).flat().includes(ext);
 }
 
-function cleanUrl(url) {
-  return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-}
-
-function processLinks(content) {
-  
-  content = content.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (match, text, url) => {
-    if (text === url || text === cleanUrl(url)) {
-      
-      return `<a href="${url}">${cleanUrl(url)}</a>`;
-    }
-
-    return `<a href="${url}">${text}</a>`;
-  });
-
-  content = content.replace(/(?<!\]\()(https?:\/\/[^\s<)]+)/g, (url) => {
-    return `<a href="${url}">${cleanUrl(url)}</a>`;
-  });
-
-  return content;
-}
 
 function removeMetaTags(content) {
   if (content.trim().startsWith('<!--') && content.includes('-->')) {
@@ -166,6 +145,26 @@ function copyImages(sourcePath, targetPath) {
     } else {
       const ext = path.extname(file).toLowerCase();
       if (ALLOWED_EXTENSIONS.images.includes(ext)) {
+        const targetFile = path.join(targetPath, file);
+        fs.copyFileSync(curPath, targetFile);
+      }
+    }
+  });
+}
+
+function copyAudio(sourcePath, targetPath) {
+  if (!fs.existsSync(sourcePath)) return;
+  
+  const files = fs.readdirSync(sourcePath);
+  files.forEach(file => {
+    const curPath = path.join(sourcePath, file);
+    const stat = fs.statSync(curPath);
+    
+    if (stat.isDirectory()) {
+      copyAudio(curPath, targetPath);
+    } else {
+      const ext = path.extname(file).toLowerCase();
+      if (ALLOWED_EXTENSIONS.audio.includes(ext)) {
         const targetFile = path.join(targetPath, file);
         fs.copyFileSync(curPath, targetFile);
       }
@@ -473,7 +472,9 @@ function createBlogContent(posts, language) {
           const postSlug = getPostSlug(post);
           const date = new Date(post.date);
           const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-          const path = language === 'uk' ? `/ua/${monthKey}/${postSlug}` : `/${monthKey}/${postSlug}`;
+          const path = language === 'uk' ? 
+            `${siteUrl}ua/${monthKey}/${postSlug}/` : 
+            `${siteUrl}${monthKey}/${postSlug}/`;
           return `
           <div class="post-wrapper">
             <div class="post" data-title="${post.title.date}" data-time="${post.title.time}" data-date="${post.date}">
@@ -719,6 +720,10 @@ function createPage(title, content, activeMenu, posts = [], currentMonth = '', p
 
     <title>${pageTitle}</title>
     
+    <!-- RSS фиды -->
+    <link rel="alternate" type="application/rss+xml" title="Code With LLM Updates" href="/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Як краще створювати код за допомогою LLM" href="/ua/feed.xml" />
+    
     <!-- Стили -->
     <link rel="stylesheet" href="/css/styles.css">
   
@@ -750,6 +755,44 @@ function createSimpleContent(content) {
     </div>`;
 }
 
+function generateRssFeed(posts, language) {
+  const lang = language === 'uk' ? 'uk' : 'en';
+  const feedUrl = language === 'uk' ? `${siteUrl}ua/feed.xml` : `${siteUrl}feed.xml`;
+  const siteTitle = language === 'uk' ? 'Як краще створювати код за допомогою LLM' : 'Code With LLM Updates';
+  const siteDescription = siteConfig.descriptions[lang === 'uk' ? 'ukr' : 'index'];
+
+  const items = posts.slice(0, 20).map(post => {
+    const date = new Date(post.date);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    const postSlug = getPostSlug(post);
+    const postUrl = language === 'uk' ? 
+      `${siteUrl}ua/${monthKey}/${postSlug}/` : 
+      `${siteUrl}${monthKey}/${postSlug}/`;
+
+    return `
+      <item>
+        <title><![CDATA[${post.title.date} ${post.title.time}]]></title>
+        <link>${postUrl}</link>
+        <guid isPermaLink="true">${postUrl}</guid>
+        <description><![CDATA[${post.content}]]></description>
+        <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      </item>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${siteTitle}</title>
+    <link>${siteUrl}${language === 'uk' ? 'ua/' : ''}</link>
+    <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
+    <description>${siteDescription}</description>
+    <language>${lang}</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    ${items}
+  </channel>
+</rss>`;
+}
+
 async function compile() {
   try {
     if (!fs.existsSync(publicDir)) {
@@ -759,8 +802,12 @@ async function compile() {
     await removeDirectoryContentsWithRetry(publicDir);
 
     const imgDir = path.join(publicDir, 'img');
+    const audioDir = path.join(publicDir, 'audio');
     if (!fs.existsSync(imgDir)) {
       fs.mkdirSync(imgDir);
+    }
+    if (!fs.existsSync(audioDir)) {
+      fs.mkdirSync(audioDir);
     }
 
     // Копируем favicon
@@ -807,11 +854,12 @@ async function compile() {
       console.warn('⚠️ styles.css не найден в папке template');
     }
 
-    // Копируем изображения
+    // Копируем изображения и аудио
     for (const lang of Object.values(posts_source)) {
       lang.forEach(({path: yearDir}) => {
         const yearPath = path.join('..', yearDir);
         copyImages(yearPath, imgDir);
+        copyAudio(yearPath, audioDir);
       });
     }
 
@@ -928,6 +976,17 @@ async function compile() {
     fs.writeFileSync(
       path.join(publicDir, 'about/index.html'), 
       createPageWithMenu('About - CodeWithLLM', createSimpleContent(about), 'about')
+    );
+
+    // Генерируем RSS-фиды
+    fs.writeFileSync(
+      path.join(publicDir, 'feed.xml'),
+      generateRssFeed(engPosts, 'en')
+    );
+
+    fs.writeFileSync(
+      path.join(publicDir, 'ua', 'feed.xml'),
+      generateRssFeed(ukrPosts, 'uk')
     );
 
   } catch (error) {

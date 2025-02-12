@@ -1,8 +1,25 @@
 const marked = require('marked');
+const { ALLOWED_EXTENSIONS } = require('../config');
 marked.use({ breaks: true, gfm: true });
 
 marked.use({
   renderer: {
+    link(token) {
+      const url = (token.href?.trim() || '');
+      const ext = url.split('.').pop()?.toLowerCase();
+      
+      if (ALLOWED_EXTENSIONS.audio.includes(`.${ext}`)) {
+        return `
+          <audio controls>
+            <source src="/audio/${url}" type="audio/${ext}">
+            ${token.text} (аудио не поддерживается вашим браузером)
+          </audio>
+        `;
+      }
+      
+      return `<a target="_blank" href="${url}"${token.title ? ` title="${token.title}"` : ''}>${token.text}</a>`;
+    },
+    
     image(href, title, text) {
       const url = (href?.href || href)?.trim() || '';
       
