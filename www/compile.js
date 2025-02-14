@@ -235,7 +235,7 @@ function createCommentsSection(post, language) {
 }
 
 function createCommentsLink(post, language, path) {
-  return `<p class="comments-link"><a href="${path}/#comments">${siteConfig.ui[language === 'uk' ? 'uk' : 'en'].comments}</a></p>`;
+  return `<p class="comments-link"><a href="${path}#comments">${siteConfig.ui[language === 'uk' ? 'uk' : 'en'].comments}</a></p>`;
 }
 
 let createPageWithMenu;
@@ -254,19 +254,22 @@ function createPostPage(post, language) {
 
 function createMonthArchivePage(posts, month, year, language, monthsData, currentMonth, allPosts) {
   const title = `${getMonthTitle({year: parseInt(year), month: parseInt(month)}, language)}`;
-  const monthTags = extractTags(posts); // Получаем теги только из постов текущего месяца
+  const monthTags = extractTags(posts);
   const lang = language === 'uk' ? 'uk' : 'en';
+  const basePath = language === 'uk' ? '/ua/' : '/';
 
   return createPage(title, `
     <div class="container" style="grid-template-columns: 1fr">
       ${createArchiveNavigation(monthsData, currentMonth, language)}
       ${posts.map(post => {
         const postSlug = getPostSlug(post);
+        const monthKey = currentMonth;
+        const fullPath = `${basePath}${monthKey}/${postSlug}/`;
         return `
         <div class="post-wrapper">
           <div class="post" data-title="${post.title.date}" data-time="${post.title.time}" data-date="${post.date}">
             ${post.content}
-              ${createCommentsLink(post, language, postSlug)}
+              ${createCommentsLink(post, language, fullPath)}
             </div>
           </div>
         `;
@@ -871,14 +874,15 @@ async function compile() {
     const engGrouped = groupPostsByYearAndMonth(engPosts);
     const ukrGrouped = groupPostsByYearAndMonth(ukrPosts);
 
-    // Предварительно генерируем меню для обоих языков
-    const engMenu = generateMenu('index', engPosts);
-    const ukrMenu = generateMenu('ukr', ukrPosts);
+    // Предварительно генерируем меню для всех страниц
+    const menus = {};
+    menuItems.forEach(item => {
+      menus[item.id] = generateMenu(item.id, item.showArchive ? (item.id === 'ukr' ? ukrPosts : engPosts) : []);
+    });
 
     // Создаем функцию для создания страницы с правильным меню
     createPageWithMenu = (title, content, activeMenu, posts = [], currentMonth = '') => {
-      const menu = activeMenu === 'ukr' ? ukrMenu : engMenu;
-      return createPage(title, content, activeMenu, posts, currentMonth, menu);
+      return createPage(title, content, activeMenu, posts, currentMonth, menus[activeMenu] || menus['index']);
     };
 
     // Создаем архивные страницы для английской версии
